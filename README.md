@@ -1,2 +1,2 @@
-# -akalsnyx.github.io
+# akalsnyx.github.io
 Flashcards
