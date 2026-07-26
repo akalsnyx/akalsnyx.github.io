@@ -1,0 +1,622 @@
+<!doctype html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Türk Dünyası Mutfak Ontolojisi">
+<title>Türk Dünyası Mutfak Ontolojisi</title>
+<style>
+:root{
+  --bg:#0F1320;--card:#171D2E;--card2:#1E2640;--border:#2A3570;
+  --text:#E8ECF4;--text2:#9AA5C4;--text3:#5A6480;
+  --R:#FF9F43;--C:#FF6B6B;--I:#00D4AA;--T:#4C9FFF;--K:#A29BFE;
+  --ESD:#FFD700;--AKR:#C084FC;--accent:#3B82F6;
+  --green:#10B981;--gold:#F59E0B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+     font-size:14px;line-height:1.55;min-height:100vh;padding-bottom:32px}
+.page{max-width:520px;margin:0 auto;padding:0 12px}
+
+.header{text-align:center;padding:24px 0 16px}
+.header h1{font-size:1.35rem;font-weight:700;letter-spacing:-.3px}
+.header p{color:var(--text2);font-size:.84rem;margin-top:5px}
+.header .src{font-size:.73rem;color:var(--text3);margin-top:4px;font-style:italic}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;
+      padding:16px;margin-bottom:14px}
+.card-title{font-size:.82rem;font-weight:600;color:var(--text2);
+            text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;
+            display:flex;align-items:center;gap:8px}
+.card-title span{background:var(--accent);color:#fff;border-radius:6px;
+                 padding:2px 8px;font-size:.73rem;letter-spacing:0}
+
+.sec-h{font-size:.72rem;font-weight:600;color:var(--text3);text-transform:uppercase;
+        letter-spacing:.9px;margin:14px 0 8px;border-top:1px solid var(--border);padding-top:10px}
+
+/* predicate pills */
+.pred-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.pred-pill{display:flex;align-items:center;gap:7px;background:var(--card2);
+           border:1px solid var(--border);border-radius:20px;padding:5px 11px}
+.pred-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.pred-label{font-size:.78rem;font-weight:600;color:var(--text)}
+.pred-sub{font-size:.7rem;color:var(--text2)}
+.pred-cnt{font-size:.78rem;font-weight:700;color:var(--gold);margin-left:4px}
+
+/* culture grid */
+.cult-grid{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.cult-tag{font-size:.72rem;background:var(--card2);border:1px solid #FF6B6B40;
+          color:var(--C);border-radius:10px;padding:3px 9px;font-weight:500}
+
+/* schema table */
+.tbl{width:100%;border-collapse:collapse;font-size:.78rem}
+.tbl th{background:var(--card2);color:var(--text2);padding:6px 8px;font-weight:600;
+        border-bottom:1px solid var(--border);text-align:left}
+.tbl td{padding:6px 8px;border-bottom:1px solid #1E2640;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.badge{display:inline-block;border-radius:6px;padding:2px 7px;font-size:.71rem;font-weight:600}
+.b-esd{background:#FFD70025;color:#FFD700}
+.b-akr{background:#C084FC25;color:#C084FC}
+.b-ing{background:#00D4AA25;color:#00D4AA}
+.b-tech{background:#4C9FFF25;color:#4C9FFF}
+.b-cult{background:#FF6B6B25;color:#FF6B6B}
+
+/* graph */
+.graph-wrap{position:relative;border-radius:12px;overflow:hidden;
+            border:1px solid var(--border);background:#0B0F1C;margin-bottom:10px}
+.graph-wrap canvas{width:100%;display:block;cursor:grab}
+.graph-wrap canvas:active{cursor:grabbing}
+.view-row{display:flex;gap:7px;margin-bottom:10px;flex-wrap:wrap}
+.vbtn{flex:1;min-width:80px;background:var(--card2);border:1px solid var(--border);
+      border-radius:10px;padding:7px 10px;color:var(--text2);font-size:.76rem;
+      font-weight:600;cursor:pointer;transition:.15s;text-align:center}
+.vbtn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.vbtn:hover:not(.active){border-color:var(--text2);color:var(--text)}
+.legend-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.leg{display:flex;align-items:center;gap:5px;font-size:.72rem;color:var(--text2)}
+.leg-dot{width:10px;height:10px;border-radius:50%}
+.leg-line{width:18px;height:3px;border-radius:2px}
+.ndetail{background:var(--card2);border:1px solid var(--border);border-radius:10px;
+          padding:10px 13px;font-size:.79rem;color:var(--text2);min-height:36px}
+.ndetail strong{color:var(--text);font-size:.85rem}
+
+/* cluster boxes */
+.cluster-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:4px}
+.cl-box{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:10px 13px}
+.cl-title{font-size:.75rem;font-weight:700;color:var(--ESD);margin-bottom:6px}
+.cl-title.akr{color:var(--AKR)}
+.cl-chain{display:flex;align-items:center;flex-wrap:wrap;gap:4px}
+.cl-node{background:#FF9F4322;color:var(--R);border:1px solid #FF9F4344;
+          border-radius:8px;padding:3px 9px;font-size:.75rem;font-weight:600}
+.cl-node.c{background:#FF6B6B22;color:var(--C);border-color:#FF6B6B44}
+.cl-arr{color:var(--text3);font-size:.82rem}
+.cl-desc{font-size:.72rem;color:var(--text2);margin-top:5px}
+
+/* stats row */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+.stat-box{background:var(--card2);border:1px solid var(--border);border-radius:10px;
+          padding:10px 8px;text-align:center}
+.stat-val{font-size:1.35rem;font-weight:700;line-height:1}
+.stat-lbl{font-size:.67rem;color:var(--text2);margin-top:4px}
+
+/* kültür matrix */
+.cult-matrix{overflow-x:auto;margin-top:4px}
+.cult-matrix table{border-collapse:collapse;width:100%;font-size:.68rem}
+.cult-matrix th{background:var(--card2);color:var(--text2);padding:5px 6px;
+                border:1px solid var(--border);white-space:nowrap;font-weight:600}
+.cult-matrix td{padding:4px 6px;border:1px solid var(--border);text-align:center;
+                color:var(--text3)}
+.cult-matrix td.yes{background:#10B98122;color:var(--green);font-weight:700}
+.cult-matrix td.part{background:#F59E0B15;color:var(--gold)}
+
+.footer-note{text-align:center;color:var(--text3);font-size:.72rem;margin-top:20px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <h1>🌏 Türk Dünyası Mutfak Ontolojisi</h1>
+    <p>RDF Triple Tablosu · Çok Kültürlü Gastronomi Bilgi Grafiği</p>
+    <p class="src">Kaynak: ontoloji_v8_kaynak.xlsx · Pilot Kitap · 150 Tarif · 17 Türk Kültürü</p>
+  </div>
+
+  <!-- Ontoloji Şeması -->
+  <div class="card">
+    <div class="card-title"><span>§1</span> Ontoloji Yapısı — RDF Triple Şeması</div>
+
+    <p style="color:var(--text2);font-size:.84rem;margin-bottom:12px">
+      Her satır bir <strong style="color:var(--text)">Subject → Predicate → Object</strong> üçlüsüdür.
+      Lokasyon sütunları Türk kültürlerinin coğrafi dağılımını kodlar;
+      İlişki Türü (Eşdeğer/Akraba) kenar semantiğini belirler.
+    </p>
+
+    <div class="sec-h">Predicate Tipleri</div>
+    <div class="pred-row">
+      <div class="pred-pill">
+        <div class="pred-dot" style="background:var(--ESD)"></div>
+        <div>
+          <div class="pred-label">:hasVariant <span class="pred-cnt">×103</span></div>
+          <div class="pred-sub">Eşdeğer · aynı yemek farklı kültür</div>
+        </div>
+      </div>
+      <div class="pred-pill">
+        <div class="pred-dot" style="background:var(--AKR)"></div>
+        <div>
+          <div class="pred-label">:isCognateOf <span class="pred-cnt">×78</span></div>
+          <div class="pred-sub">Akraba · köken akrabalığı</div>
+        </div>
+      </div>
+      <div class="pred-pill">
+        <div class="pred-dot" style="background:var(--I)"></div>
+        <div>
+          <div class="pred-label">:hasIngredient <span class="pred-cnt">×879</span></div>
+          <div class="pred-sub">Malzeme ilişkisi</div>
+        </div>
+      </div>
+      <div class="pred-pill">
+        <div class="pred-dot" style="background:var(--T)"></div>
+        <div>
+          <div class="pred-label">:hasPrepTechnique <span class="pred-cnt">×333</span></div>
+          <div class="pred-sub">Pişirme tekniği</div>
+        </div>
+      </div>
+      <div class="pred-pill">
+        <div class="pred-dot" style="background:var(--C)"></div>
+        <div>
+          <div class="pred-label">:hasCulturalOrigin <span class="pred-cnt">×253</span></div>
+          <div class="pred-sub">Kültürel köken</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-h">Kapsanan 17 Türk Kültürü</div>
+    <div class="cult-grid">
+      <span class="cult-tag">Kazak</span><span class="cult-tag">Kırgız</span>
+      <span class="cult-tag">Özbek</span><span class="cult-tag">Uygur</span>
+      <span class="cult-tag">Tatar</span><span class="cult-tag">Başkurt</span>
+      <span class="cult-tag">Azerbaycan</span><span class="cult-tag">Anadolu</span>
+      <span class="cult-tag">Hakas</span><span class="cult-tag">Tuva</span>
+      <span class="cult-tag">Altay</span><span class="cult-tag">Çuvaş</span>
+      <span class="cult-tag">Nogay</span><span class="cult-tag">KırımTatar</span>
+      <span class="cult-tag">Gagavuz</span><span class="cult-tag">Türkmen</span>
+      <span class="cult-tag">Yakut</span>
+    </div>
+
+    <div class="sec-h">Triple Tablo Formatı</div>
+    <div style="overflow-x:auto">
+      <table class="tbl">
+        <thead><tr><th>Kategori</th><th>Subject</th><th>S.Loc</th><th>Predicate</th><th>Object</th><th>O.Loc</th><th>Tür</th></tr></thead>
+        <tbody>
+          <tr><td>EKMEK</td><td>:Bavırsak</td><td>Kazak</td><td><span class="badge b-esd">:hasVariant</span></td><td>:Boorsok</td><td>Kırgız</td><td>Eşdeğer</td></tr>
+          <tr><td>ÇORBA</td><td>:Tutmaç</td><td>Anadolu</td><td><span class="badge b-akr">:isCognateOf</span></td><td>:tutpas</td><td>Hakas</td><td>Akraba</td></tr>
+          <tr><td>YEMEK</td><td>:Bişbarmak</td><td>Kazak</td><td><span class="badge b-ing">:hasIngredient</span></td><td>:KuzuEti</td><td>—</td><td>Varlık</td></tr>
+          <tr><td>ÇORBA</td><td>:BAKLA_CORBASI</td><td>—</td><td><span class="badge b-tech">:hasPrepTechnique</span></td><td>:Kavurma/Sote</td><td>—</td><td>—</td></tr>
+          <tr><td>YEMEK</td><td>:Bişbarmak</td><td>Kazak</td><td><span class="badge b-cult">:hasCulturalOrigin</span></td><td>:Kazak</td><td>—</td><td>Kültürel</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- İnteraktif Graf -->
+  <div class="card">
+    <div class="card-title"><span>🕸</span> Heterojen Graf Görselleştirmesi
+      <span style="font-size:.69rem;color:var(--text3);font-weight:400;margin-left:auto">(sürükle / tıkla)</span>
+    </div>
+
+    <div class="view-row">
+      <button class="vbtn active" id="btn-esde" onclick="setView('esde')">Varyant Ağı</button>
+      <button class="vbtn" id="btn-akra" onclick="setView('akra')">Akraba Ağı</button>
+      <button class="vbtn" id="btn-malz" onclick="setView('malz')">Malzeme Ağı</button>
+    </div>
+
+    <div class="legend-row">
+      <span class="leg"><span class="leg-dot" style="background:var(--R)"></span>Tarif</span>
+      <span class="leg"><span class="leg-dot" style="background:var(--C)"></span>Kültür</span>
+      <span class="leg"><span class="leg-dot" style="background:var(--I)"></span>Malzeme</span>
+      <span class="leg"><span class="leg-line" style="background:var(--ESD)"></span>Eşdeğer</span>
+      <span class="leg"><span class="leg-line" style="background:var(--AKR);border-top:2px dashed var(--AKR);height:0"></span>Akraba</span>
+    </div>
+
+    <div class="graph-wrap"><canvas id="gc" height="380"></canvas></div>
+
+    <div class="ndetail" id="ndetail">Bir düğüme tıklayarak detay görün…</div>
+  </div>
+
+  <!-- Önemli Varyant Kümeleri -->
+  <div class="card">
+    <div class="card-title"><span>📌</span> Önemli Kümeler</div>
+
+    <div class="cluster-grid">
+      <div class="cl-box">
+        <div class="cl-title">Bavırsak Ailesi — 5 Kültür · Eşdeğer</div>
+        <div class="cl-chain">
+          <span class="cl-node">Bavırsak</span><span class="cl-node c">Kazak</span>
+          <span class="cl-arr">↔</span>
+          <span class="cl-node">Boorsok</span><span class="cl-node c">Kırgız</span>
+          <span class="cl-arr">↔</span>
+          <span class="cl-node">borzak</span><span class="cl-node c">Tuva</span>
+          <span class="cl-arr">↔</span>
+          <span class="cl-node">pavarsak</span><span class="cl-node c">Çuvaş</span>
+          <span class="cl-arr">↔</span>
+          <span class="cl-node">porsıh</span><span class="cl-node c">Hakas</span>
+        </div>
+        <div class="cl-desc">Tüm Türk coğrafyasında kızartma hamur → en büyük eşdeğer kümesi</div>
+      </div>
+
+      <div class="cl-box">
+        <div class="cl-title">Göce Ailesi — 3 Kültür · Eşdeğer</div>
+        <div class="cl-chain">
+          <span class="cl-node">Göce</span><span class="cl-node c">Anadolu</span>
+          <span class="cl-arr">↔</span>
+          <span class="cl-node">Köje</span><span class="cl-node c">Kazak/Kırgız</span>
+          <span class="cl-arr">↔</span>
+          <span class="cl-node">koço</span><span class="cl-node c">Altay</span>
+        </div>
+        <div class="cl-desc">Tahıl lapası çorbası → Orta Asya'dan Anadolu'ya</div>
+      </div>
+
+      <div class="cl-box">
+        <div class="cl-title akr">Tutmaç Zinciri — 5 Akraba · isCognateOf</div>
+        <div class="cl-chain">
+          <span class="cl-node">Tutmaç</span><span class="cl-node c">Anadolu</span>
+          <span class="cl-arr">→</span>
+          <span class="cl-node">tutpas</span><span class="cl-node c">Hakas</span>
+          <span class="cl-arr">·</span>
+          <span class="cl-node">Omaç</span><span class="cl-node c">Uygur</span>
+          <span class="cl-arr">·</span>
+          <span class="cl-node">umaç</span><span class="cl-node c">Tatar</span>
+          <span class="cl-arr">·</span>
+          <span class="cl-node">Umas</span><span class="cl-node c">Başkurt</span>
+        </div>
+        <div class="cl-desc">Hamur çorbası etymoloji ailesi → en geniş akraba zinciri</div>
+      </div>
+
+      <div class="cl-box">
+        <div class="cl-title">Peremeç Ailesi — 4 Variant · Eşdeğer</div>
+        <div class="cl-chain">
+          <span class="cl-node">Peremeç</span><span class="cl-node c">Tatar</span>
+          <span class="cl-arr">↔</span>
+          <span class="cl-node">Ağzı açık</span><span class="cl-node c">Anadolu</span>
+          <span class="cl-arr">↔</span>
+          <span class="cl-node">peremes</span><span class="cl-node c">Başkurt</span>
+          <span class="cl-arr">↔</span>
+          <span class="cl-node">püremeçi</span><span class="cl-node c">Çuvaş</span>
+        </div>
+        <div class="cl-desc">Açık yüzlü kızartma börek → Volga-Ural-Anadolu hattı</div>
+      </div>
+
+      <div class="cl-box">
+        <div class="cl-title">Pilav Ailesi — 4 Kültür · Eşdeğer</div>
+        <div class="cl-chain">
+          <span class="cl-node">Plov</span><span class="cl-node c">Azerbaycan</span>
+          <span class="cl-arr">↔</span>
+          <span class="cl-node">palov</span><span class="cl-node c">Özbek</span>
+          <span class="cl-arr">↔</span>
+          <span class="cl-node">paloo</span><span class="cl-node c">Kırgız</span>
+          <span class="cl-arr">↔</span>
+          <span class="cl-node">polo</span><span class="cl-node c">Uygur</span>
+        </div>
+        <div class="cl-desc">Orta Asya pilavı → 4 dilde fonetik varyasyon</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kültür × Kategori Matrisi -->
+  <div class="card">
+    <div class="card-title"><span>🗂</span> Kültür × Kategori Matrisi</div>
+    <div class="cult-matrix">
+      <table>
+        <thead>
+          <tr>
+            <th>Kültür</th>
+            <th>ÇORBA</th>
+            <th>EKMEK</th>
+            <th>HAMUR</th>
+            <th>PİLAV</th>
+            <th>TATLI</th>
+            <th>YEMEK</th>
+            <th>İÇECEK</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Kazak</strong></td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="part">·</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td><strong>Kırgız</strong></td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="part">·</td><td class="yes">✓</td><td class="part">·</td></tr>
+          <tr><td><strong>Özbek</strong></td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="part">·</td></tr>
+          <tr><td><strong>Uygur</strong></td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="part">·</td></tr>
+          <tr><td><strong>Tatar</strong></td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="part">·</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td><strong>Azerbaycan</strong></td><td class="yes">✓</td><td class="part">·</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="part">·</td></tr>
+          <tr><td><strong>Anadolu</strong></td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="part">·</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td><strong>Hakas</strong></td><td class="yes">✓</td><td class="part">·</td><td class="yes">✓</td><td class="part">·</td><td class="part">·</td><td class="yes">✓</td><td class="part">·</td></tr>
+          <tr><td><strong>Tuva</strong></td><td class="part">·</td><td class="yes">✓</td><td class="yes">✓</td><td class="part">·</td><td class="part">·</td><td class="yes">✓</td><td class="part">·</td></tr>
+          <tr><td><strong>Başkurt</strong></td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="part">·</td><td class="yes">✓</td><td class="part">·</td><td class="part">·</td></tr>
+          <tr><td><strong>KırımTatar</strong></td><td class="part">·</td><td class="yes">✓</td><td class="yes">✓</td><td class="part">·</td><td class="yes">✓</td><td class="part">·</td><td class="part">·</td></tr>
+          <tr><td><strong>Çuvaş</strong></td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="part">·</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:.7rem;color:var(--text3);margin-top:8px">✓ tarif mevcut · · kısmi / tek tarif</p>
+  </div>
+
+  <!-- İstatistikler -->
+  <div class="card">
+    <div class="card-title"><span>📊</span> Ontoloji İstatistikleri</div>
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--R)">150</div>
+        <div class="stat-lbl">Pilot tarif</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--C)">17</div>
+        <div class="stat-lbl">Türk kültürü</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--ESD)">2,704</div>
+        <div class="stat-lbl">RDF triple</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--AKR)">181</div>
+        <div class="stat-lbl">Unique relation</div>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--ESD)">103</div>
+        <div class="stat-lbl">hasVariant</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--AKR)">78</div>
+        <div class="stat-lbl">isCognateOf</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--I)">879</div>
+        <div class="stat-lbl">hasIngredient</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--T)">333</div>
+        <div class="stat-lbl">hasPrepTechnique</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    Türk Dünyası Mutfak Ontolojisi · ontoloji_v8_kaynak.xlsx<br>
+    hasVariant (Eşdeğer) · isCognateOf (Akraba) · hasIngredient · hasPrepTechnique · hasCulturalOrigin
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('gc');
+const ctx = canvas.getContext('2d');
+
+function resize(){
+  canvas.width = canvas.offsetWidth * (window.devicePixelRatio||1);
+  canvas.height = 380 * (window.devicePixelRatio||1);
+  ctx.scale(window.devicePixelRatio||1, window.devicePixelRatio||1);
+}
+window.addEventListener('resize', ()=>{ resize(); initGraph(); });
+resize();
+
+const COLORS = { R:'#FF9F43', C:'#FF6B6B', I:'#00D4AA', T:'#4C9FFF', K:'#A29BFE' };
+const W = ()=>canvas.offsetWidth, H = ()=>380;
+
+let nodes=[], edges=[], dragging=null, dragOff={x:0,y:0}, currentView='esde';
+
+const NODE_DEFS = {
+  esde: [
+    // Bavırsak cluster (Eşdeğer)
+    {id:'bavir',  type:'R', lbl:'Bavırsak',  info:'Tarif · Kazak · EKMEK · kızartma hamur · hasVariant ×4'},
+    {id:'boorsok',type:'R', lbl:'Boorsok',   info:'Tarif · Kırgız · EKMEK · :hasVariant :Bavırsak (Eşdeğer)'},
+    {id:'borzak', type:'R', lbl:'borzak',    info:'Tarif · Tuva · EKMEK · :hasVariant :Bavırsak (Eşdeğer)'},
+    {id:'pavarsak',type:'R',lbl:'pavarsak',  info:'Tarif · Çuvaş · EKMEK · :hasVariant :Bavırsak (Eşdeğer)'},
+    {id:'porsih', type:'R', lbl:'porsıh',    info:'Tarif · Hakas · EKMEK · :hasVariant :Bavırsak (Eşdeğer)'},
+    {id:'pisi',   type:'R', lbl:'Pişi',      info:'Tarif · Anadolu · EKMEK · :isCognateOf :Bavırsak (Akraba)'},
+    // Göce cluster (Eşdeğer)
+    {id:'goce',   type:'R', lbl:'Göce',      info:'Tarif · Anadolu · ÇORBA · tahıl lapası çorbası · hasVariant ×2'},
+    {id:'koje',   type:'R', lbl:'Köje',      info:'Tarif · Kazak/Kırgız · ÇORBA · :hasVariant :Göce (Eşdeğer)'},
+    {id:'koco',   type:'R', lbl:'koço',      info:'Tarif · Altay · ÇORBA · :hasVariant :Göce (Eşdeğer)'},
+    // Culture nodes
+    {id:'kazak',  type:'C', lbl:'Kazak',     info:'Kültür · 21 tarif · Bişbarmak, Bavırsak, Köje…'},
+    {id:'kirgiz', type:'C', lbl:'Kırgız',    info:'Kültür · Boorsok, besbarmak, paloo…'},
+    {id:'tuva',   type:'C', lbl:'Tuva',      info:'Kültür · borzak, Mançı, boova…'},
+    {id:'cuvas',  type:'C', lbl:'Çuvaş',     info:'Kültür · pavarsak, Uyran, Huran kukli…'},
+    {id:'hakas',  type:'C', lbl:'Hakas',     info:'Kültür · porsıh, Mun, Putu, ıstı…'},
+    {id:'anadolu',type:'C', lbl:'Anadolu',   info:'Kültür · Göce, Pişi, Tutmaç, Kesme, Uğut…'},
+    {id:'altay',  type:'C', lbl:'Altay',     info:'Kültür · koço, tok-çok, Kan…'},
+  ],
+  akra: [
+    // Tutmaç cognate chain
+    {id:'tutmac', type:'R', lbl:'Tutmaç',    info:'SAK · Anadolu · ÇORBA · isCognateOf hub · 5 akraba'},
+    {id:'tutpas', type:'R', lbl:'tutpas',    info:'Tarif · Hakas · ÇORBA · :isCognateOf :Tutmaç (Akraba)'},
+    {id:'omac',   type:'R', lbl:'Omaç',      info:'Tarif · Uygur · ÇORBA · :isCognateOf :Tutmaç (Akraba)'},
+    {id:'umac',   type:'R', lbl:'umaç',      info:'Tarif · Tatar · ÇORBA · :isCognateOf :Tutmaç (Akraba)'},
+    {id:'umas',   type:'R', lbl:'Umas',      info:'Tarif · Başkurt · ÇORBA · :isCognateOf :Tutmaç (Akraba)'},
+    {id:'suyukas',type:'R', lbl:'Suyukaş',   info:'Tarif · Uygur · ÇORBA · :isCognateOf :Un aşı çorbası (Akraba)'},
+    // Bavırsak → Pişi cognate
+    {id:'bavir',  type:'R', lbl:'Bavırsak',  info:'Tarif · Kazak · EKMEK · :isCognateOf :Pişi, :boova…'},
+    {id:'pisi',   type:'R', lbl:'Pişi',      info:'Tarif · Anadolu · EKMEK · :isCognateOf :Bavırsak (Akraba)'},
+    // Cultures
+    {id:'anadolu',type:'C', lbl:'Anadolu',   info:'Kültür · Tutmaç, Pişi, Göce, Kesme…'},
+    {id:'hakas',  type:'C', lbl:'Hakas',     info:'Kültür · tutpas, porsıh, Mun…'},
+    {id:'uygur',  type:'C', lbl:'Uygur',     info:'Kültür · Omaç, Suyukaş, Plov, narin…'},
+    {id:'tatar',  type:'C', lbl:'Tatar',     info:'Kültür · umaç, Salma, Peremeç, Sek sek…'},
+    {id:'baskurt',type:'C', lbl:'Başkurt',   info:'Kültür · Umas, peremes, Salma…'},
+    {id:'kazak',  type:'C', lbl:'Kazak',     info:'Kültür · Bavırsak, Bişbarmak…'},
+  ],
+  malz: [
+    // Recipes
+    {id:'bisbarm',type:'R', lbl:'Bişbarmak',  info:'Tarif · Kazak · YEMEK · 5 malzeme · en ikonik Kazak yemeği'},
+    {id:'boorsok',type:'R', lbl:'Boorsok',    info:'Tarif · Kırgız · EKMEK · 4 malzeme · Bavırsak eşdeğeri'},
+    {id:'dovga',  type:'R', lbl:'Dovga',      info:'Tarif · Azerbaycan · ÇORBA · yoğurtlu çorba'},
+    {id:'goce',   type:'R', lbl:'Göce',       info:'Tarif · Anadolu · ÇORBA · tahıl lapası · Köje eşdeğeri'},
+    // Ingredients
+    {id:'kuzueti',type:'I', lbl:'Kuzu Eti',   info:'Malzeme · Bişbarmak, Dimlama… · Türk dünyası proteini'},
+    {id:'un',     type:'I', lbl:'Un',         info:'Malzeme · Boorsok, Tutmaç, Göce… · en yaygın bağlayıcı'},
+    {id:'su',     type:'I', lbl:'Su',         info:'Malzeme · tüm çorbalarda · Bişbarmak, Boorsok, Göce'},
+    {id:'yogurt', type:'I', lbl:'Yoğurt',     info:'Malzeme · Dovga, Boorsok · fermente süt ürünü'},
+    {id:'sogan',  type:'I', lbl:'Soğan',      info:'Malzeme · Bişbarmak, Dimlama · aromatic base'},
+  ],
+};
+
+const EDGE_DEFS = {
+  esde: [
+    // Bavırsak Eşdeğer cluster
+    ['bavir','boorsok','hasVariant'],
+    ['bavir','borzak','hasVariant'],
+    ['bavir','pavarsak','hasVariant'],
+    ['bavir','porsih','hasVariant'],
+    ['bavir','pisi','isCognateOf'],
+    // Göce Eşdeğer cluster
+    ['goce','koje','hasVariant'],
+    ['goce','koco','hasVariant'],
+    // Cultural origins
+    ['bavir','kazak','hasCulturalOrigin'],
+    ['boorsok','kirgiz','hasCulturalOrigin'],
+    ['borzak','tuva','hasCulturalOrigin'],
+    ['pavarsak','cuvas','hasCulturalOrigin'],
+    ['porsih','hakas','hasCulturalOrigin'],
+    ['pisi','anadolu','hasCulturalOrigin'],
+    ['goce','anadolu','hasCulturalOrigin'],
+    ['koje','kazak','hasCulturalOrigin'],
+    ['koco','altay','hasCulturalOrigin'],
+  ],
+  akra: [
+    // Tutmaç isCognateOf chain
+    ['tutmac','tutpas','isCognateOf'],
+    ['tutmac','omac','isCognateOf'],
+    ['tutmac','umac','isCognateOf'],
+    ['tutmac','umas','isCognateOf'],
+    ['tutmac','suyukas','isCognateOf'],
+    // Bavırsak → Pişi
+    ['bavir','pisi','isCognateOf'],
+    // Cultural origins
+    ['tutmac','anadolu','hasCulturalOrigin'],
+    ['tutpas','hakas','hasCulturalOrigin'],
+    ['omac','uygur','hasCulturalOrigin'],
+    ['umac','tatar','hasCulturalOrigin'],
+    ['umas','baskurt','hasCulturalOrigin'],
+    ['suyukas','uygur','hasCulturalOrigin'],
+    ['bavir','kazak','hasCulturalOrigin'],
+    ['pisi','anadolu','hasCulturalOrigin'],
+  ],
+  malz: [
+    // Bişbarmak ingredients
+    ['bisbarm','kuzueti','hasIngredient'],
+    ['bisbarm','un','hasIngredient'],
+    ['bisbarm','su','hasIngredient'],
+    ['bisbarm','sogan','hasIngredient'],
+    // Boorsok ingredients
+    ['boorsok','un','hasIngredient'],
+    ['boorsok','su','hasIngredient'],
+    ['boorsok','yogurt','hasIngredient'],
+    // Dovga ingredients
+    ['dovga','yogurt','hasIngredient'],
+    ['dovga','su','hasIngredient'],
+    // Göce ingredients
+    ['goce','un','hasIngredient'],
+    ['goce','su','hasIngredient'],
+  ],
+};
+
+function edgeColor(rel){
+  if(rel==='hasVariant') return '#FFD700';
+  if(rel==='isCognateOf') return '#C084FC';
+  if(rel==='hasIngredient') return '#00D4AA88';
+  return '#FF6B6B44';
+}
+function edgeDash(rel){
+  return rel==='isCognateOf' ? [5,4] : [];
+}
+
+function setView(v){
+  currentView=v;
+  ['esde','akra','malz'].forEach(id=>document.getElementById('btn-'+id).classList.toggle('active',id===v));
+  initGraph();
+}
+
+function initGraph(){
+  nodes=[]; edges=[];
+  const w=W(), h=H(), defs=NODE_DEFS[currentView], edefs=EDGE_DEFS[currentView];
+  const cx=w/2, cy=h/2, r=Math.min(w,h)*0.37;
+
+  // Compute degree for sizing
+  const deg={};
+  edefs.forEach(([a,b])=>{ deg[a]=(deg[a]||0)+1; deg[b]=(deg[b]||0)+1; });
+
+  defs.forEach((d,i)=>{
+    const ang=(i/defs.length)*Math.PI*2 - Math.PI/2;
+    const dist = d.type==='R' ? r*0.52 : d.type==='C' ? r*1.0 : r*0.82;
+    const radius = d.type==='R' ? 11+(deg[d.id]||0)*0.7 : d.type==='C'?10:9;
+    nodes.push({...d, color:COLORS[d.type], radius:Math.min(radius,16),
+      x:cx+dist*Math.cos(ang), y:cy+dist*Math.sin(ang), vx:0, vy:0});
+  });
+  edefs.forEach(([a,b,rel])=>{
+    const na=nodeById(a), nb=nodeById(b); if(!na||!nb) return;
+    edges.push({a,b,rel, color:edgeColor(rel), dash:edgeDash(rel)});
+  });
+}
+
+function nodeById(id){ return nodes.find(n=>n.id===id); }
+
+function draw(){
+  const w=W(), h=H(); ctx.clearRect(0,0,w,h);
+
+  // Apply gentle spring forces
+  nodes.forEach(n=>{
+    nodes.forEach(m=>{
+      if(n===m) return;
+      const dx=n.x-m.x, dy=n.y-m.y, d=Math.sqrt(dx*dx+dy*dy)||1;
+      if(d<90){ const f=0.3*(90-d)/d; n.vx+=dx*f*0.05; n.vy+=dy*f*0.05; }
+    });
+    n.x+=n.vx; n.y+=n.vy; n.vx*=0.7; n.vy*=0.7;
+    n.x=Math.max(n.radius+4,Math.min(w-n.radius-4,n.x));
+    n.y=Math.max(n.radius+4,Math.min(h-n.radius-4,n.y));
+  });
+
+  // Draw edges
+  edges.forEach(e=>{
+    const a=nodeById(e.a), b=nodeById(e.b); if(!a||!b) return;
+    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+    ctx.strokeStyle=e.color;
+    ctx.lineWidth = e.rel==='hasVariant'?2.2 : e.rel==='isCognateOf'?1.8:1.0;
+    ctx.setLineDash(e.dash);
+    ctx.stroke(); ctx.setLineDash([]);
+  });
+
+  // Draw nodes
+  nodes.forEach(n=>{
+    ctx.beginPath(); ctx.arc(n.x,n.y,n.radius,0,Math.PI*2);
+    ctx.fillStyle=n.color; ctx.fill();
+    ctx.strokeStyle='#0B0F1C'; ctx.lineWidth=2; ctx.stroke();
+    ctx.fillStyle='#9AA5C4'; ctx.font=`${n.type==='R'?9.5:8.5}px sans-serif`;
+    ctx.textAlign='center';
+    ctx.fillText(n.lbl, n.x, n.y+n.radius+11);
+  });
+  requestAnimationFrame(draw);
+}
+
+function getPos(e){ const r=canvas.getBoundingClientRect(),t=e.touches?e.touches[0]:e; return {x:t.clientX-r.left,y:t.clientY-r.top}; }
+function nodeAt(x,y){ for(let i=nodes.length-1;i>=0;i--){ const n=nodes[i],d=n.radius+7,dx=n.x-x,dy=n.y-y; if(dx*dx+dy*dy<=d*d) return n; } return null; }
+
+canvas.addEventListener('mousedown',e=>{ const p=getPos(e),n=nodeAt(p.x,p.y); if(n){dragging=n;dragOff={x:p.x-n.x,y:p.y-n.y};} });
+canvas.addEventListener('mousemove',e=>{ if(dragging){const p=getPos(e);dragging.x=p.x-dragOff.x;dragging.y=p.y-dragOff.y;} });
+canvas.addEventListener('mouseup',e=>{
+  if(dragging){ const p=getPos(e); if(Math.abs(p.x-dragging.x-dragOff.x)<5&&Math.abs(p.y-dragging.y-dragOff.y)<5){
+    const nd=document.getElementById('ndetail');
+    nd.innerHTML=`<strong>${dragging.lbl}</strong><br>${dragging.info}`;
+  }}
+  dragging=null;
+});
+canvas.addEventListener('click',e=>{
+  const p=getPos(e), n=nodeAt(p.x,p.y);
+  if(n){ const nd=document.getElementById('ndetail'); nd.innerHTML=`<strong>${n.lbl}</strong><br>${n.info}`; }
+});
+canvas.addEventListener('touchstart',e=>{ e.preventDefault(); const p=getPos(e),n=nodeAt(p.x,p.y); if(n){dragging=n;dragOff={x:p.x-n.x,y:p.y-n.y};} },{passive:false});
+canvas.addEventListener('touchmove',e=>{ e.preventDefault(); if(dragging){const p=getPos(e);dragging.x=p.x-dragOff.x;dragging.y=p.y-dragOff.y;} },{passive:false});
+canvas.addEventListener('touchend',e=>{ if(dragging){ const p=getPos(e); const nd=document.getElementById('ndetail'); nd.innerHTML=`<strong>${dragging.lbl}</strong><br>${dragging.info}`; } dragging=null; });
+
+initGraph();
+draw();
+</script>
+</body>
