@@ -8,109 +8,116 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sakarya Yemek Ağı">
 <meta name="theme-color" content="#0F1320">
-<title>Sakarya Yemek Ağı — Graph AI</title>
+<title>Sakarya Yemek Ağı — Heterojen Graph AI</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#0F1320;--bg2:#161C30;--bg3:#1E2640;
-  --card:#1A2035;--card2:#222A45;--border:#2A3555;
+  --card:#1A2035;--border:#2A3555;
   --text:#E8EAF6;--text2:#9AA5C4;--text3:#6B7A9E;
-  --dish:#FF9F43;--dish2:#FFCA6B;
-  --ing:#00D4AA;--ing2:#06B88F;
-  --meth:#7B61FF;
-  --accent:#4C9FFF;--warn:#FF6B6B;--gold:#FFD166;--green:#06D6A0;
+  --R:#FF9F43;--I:#00D4AA;--C:#FF6B6B;--T:#4C9FFF;--P:#A29BFE;--N:#FD79A8;
+  --accent:#4C9FFF;--gold:#FFD166;--green:#06D6A0;--meth:#7B61FF;
   --rad:14px;--rad2:8px;
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6}
-.page{max-width:900px;margin:0 auto;padding:16px 14px 80px}
+.page{max-width:920px;margin:0 auto;padding:16px 14px 80px}
 
-.header{text-align:center;padding:28px 0 20px}
-.header h1{font-size:1.55rem;font-weight:700;background:linear-gradient(135deg,var(--dish),var(--dish2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.header{text-align:center;padding:28px 0 18px}
+.header h1{font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,var(--R),var(--N));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .header p{color:var(--text2);margin-top:6px;font-size:.88rem}
 
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);padding:18px;margin-bottom:16px}
-.card-title{font-size:1rem;font-weight:600;color:var(--dish);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.card-title .icon{font-size:1.15rem}
+.card-title{font-size:1rem;font-weight:600;color:var(--R);margin-bottom:12px;display:flex;align-items:center;gap:8px}
 
-.info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
-.info-item{background:var(--bg3);border-radius:var(--rad2);padding:12px 10px;text-align:center}
-.info-val{font-size:1.25rem;font-weight:700;color:var(--ing)}
-.info-lbl{font-size:.74rem;color:var(--text2);margin-top:2px}
+/* node-type pills */
+.ntype-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.ntype{display:flex;align-items:center;gap:6px;background:var(--bg3);border-radius:20px;padding:5px 12px;font-size:.8rem}
+.ndot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.nsub{color:var(--text3);font-size:.72rem;margin-left:2px}
 
-/* tabs */
-.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
-.tab{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-size:.81rem;cursor:pointer;color:var(--text2);transition:.2s}
-.tab.active{background:var(--dish);border-color:var(--dish);color:#fff;font-weight:600}
-.method-panel{display:none}.method-panel.active{display:block}
+/* formula box */
+.formula{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rad2);padding:12px 16px;font-family:'Georgia',serif;font-style:italic;font-size:.95rem;color:var(--text2);margin:10px 0;overflow-x:auto;white-space:nowrap}
+.formula span{color:var(--text)}
 
-/* graph */
-.graph-wrap{border-radius:var(--rad2);overflow:hidden;background:var(--bg);border:1px solid var(--border);margin-bottom:10px;position:relative}
-#graphCanvas{width:100%;display:block;cursor:grab}
-#graphCanvas:active{cursor:grabbing}
-.graph-ctrl{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
-.ctrl-btn{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:.78rem;cursor:pointer;color:var(--text2);transition:.2s}
-.ctrl-btn.active{background:var(--dish);border-color:var(--dish);color:#fff}
-.legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
-.legend-item{display:flex;align-items:center;gap:5px;font-size:.76rem;color:var(--text2)}
-.ldot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.ledge{width:22px;height:3px;border-radius:2px;flex-shrink:0}
-
-/* pipeline */
-.pipeline{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin:8px 0}
-.step{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rad2);padding:8px 10px;font-size:.79rem;text-align:center;flex:1;min-width:72px}
-.step-num{font-size:.62rem;color:var(--dish);font-weight:700;display:block;margin-bottom:1px}
-.arrow{color:var(--text3);font-size:1rem;flex-shrink:0}
-
-/* metrics */
-.metric-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:8px;margin-top:10px}
-.metric{background:var(--bg3);border-radius:var(--rad2);padding:10px;text-align:center}
-.metric-val{font-size:1.2rem;font-weight:700}
-.metric-lbl{font-size:.71rem;color:var(--text2);margin-top:2px}
-
-/* bar chart */
-.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.bar-label{width:110px;font-size:.79rem;color:var(--text2);text-align:right;flex-shrink:0}
-.bar-track{flex:1;background:var(--bg3);border-radius:4px;height:18px;overflow:hidden}
-.bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:.7rem;font-weight:600;color:#fff}
-.bar-ann{font-size:.73rem;color:var(--text3);width:50px;flex-shrink:0}
-
-/* table */
-.tbl{width:100%;border-collapse:collapse;font-size:.81rem;margin-top:6px}
+/* edge type table */
+.tbl{width:100%;border-collapse:collapse;font-size:.81rem}
 .tbl th{background:var(--bg3);color:var(--text2);padding:7px 10px;text-align:left;font-weight:600}
 .tbl td{padding:7px 10px;border-top:1px solid var(--border)}
 .tbl tr:hover td{background:var(--bg3)}
-.badge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:.7rem;font-weight:600}
-.bg{background:var(--bg3)}
-.b-or{background:#FF9F4322;color:var(--dish)}
-.b-gr{background:#06D6A022;color:var(--green)}
-.b-bl{background:#4C9FFF22;color:var(--accent)}
-.b-pu{background:#7B61FF22;color:var(--meth)}
-.b-gd{background:#FFD16622;color:var(--gold)}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.7rem;font-weight:600}
+.b-R{background:#FF9F4325;color:var(--R)}
+.b-I{background:#00D4AA25;color:var(--I)}
+.b-C{background:#FF6B6B25;color:var(--C)}
+.b-T{background:#4C9FFF25;color:var(--T)}
+.b-P{background:#A29BFE25;color:var(--P)}
+.b-N{background:#FD79A825;color:var(--N)}
+.b-gr{background:#06D6A025;color:var(--green)}
+.b-gd{background:#FFD16625;color:var(--gold)}
+.b-pu{background:#7B61FF25;color:var(--meth)}
+.b-bl{background:#4C9FFF25;color:var(--accent)}
 
-/* run button + sim */
-.run-btn{background:linear-gradient(135deg,var(--dish),#e67e22);color:#fff;border:none;border-radius:20px;padding:10px 22px;font-size:.86rem;font-weight:600;cursor:pointer;transition:.2s;margin-top:12px}
+/* tabs */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-size:.8rem;cursor:pointer;color:var(--text2);transition:.2s}
+.tab.active{background:var(--R);border-color:var(--R);color:#fff;font-weight:600}
+.mpanel{display:none}.mpanel.active{display:block}
+
+/* graph */
+.graph-wrap{border-radius:var(--rad2);overflow:hidden;background:var(--bg);border:1px solid var(--border);margin-bottom:8px}
+#gc{width:100%;display:block;cursor:grab}#gc:active{cursor:grabbing}
+.gctrl{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.cbtn{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:.77rem;cursor:pointer;color:var(--text2);transition:.2s}
+.cbtn.active{background:var(--R);border-color:var(--R);color:#fff}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.li{display:flex;align-items:center;gap:5px;font-size:.74rem;color:var(--text2)}
+
+/* pipeline */
+.pipeline{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin:8px 0}
+.step{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rad2);padding:7px 10px;font-size:.78rem;text-align:center;flex:1;min-width:68px}
+.step-num{font-size:.6rem;font-weight:700;display:block;margin-bottom:1px}
+.arr{color:var(--text3);font-size:1rem;flex-shrink:0}
+
+/* metrics */
+.mrow{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-top:10px}
+.metric{background:var(--bg3);border-radius:var(--rad2);padding:10px;text-align:center}
+.mval{font-size:1.15rem;font-weight:700}
+.mlbl{font-size:.69rem;color:var(--text2);margin-top:2px}
+
+/* sim */
+.run-btn{background:linear-gradient(135deg,var(--R),#e67e22);color:#fff;border:none;border-radius:20px;padding:10px 22px;font-size:.85rem;font-weight:600;cursor:pointer;transition:.2s;margin-top:12px}
 .run-btn:hover{opacity:.86;transform:translateY(-1px)}
-.run-btn:active{transform:translateY(0)}
 .prog-wrap{margin-top:12px;display:none}
 .prog-track{background:var(--bg3);border-radius:4px;height:7px;overflow:hidden;margin-top:4px}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--dish),var(--ing));border-radius:4px;width:0;transition:width .1s linear}
-.sim-log{font-family:monospace;font-size:.76rem;color:var(--ing);margin-top:8px;height:76px;overflow-y:auto;background:var(--bg);border:1px solid var(--border);border-radius:var(--rad2);padding:8px}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--R),var(--I));border-radius:4px;width:0;transition:width .1s linear}
+.sim-log{font-family:monospace;font-size:.75rem;color:var(--I);margin-top:8px;height:76px;overflow-y:auto;background:var(--bg);border:1px solid var(--border);border-radius:var(--rad2);padding:8px}
 
-.section-h{font-size:.76rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin:14px 0 8px}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.chip{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:.76rem;color:var(--text2)}
-.highlight-box{background:var(--bg3);border-left:3px solid var(--dish);border-radius:0 var(--rad2) var(--rad2) 0;padding:10px 12px;font-size:.85rem;color:var(--text2);margin-bottom:8px}
-.highlight-box strong{color:var(--text)}
+/* metapath box */
+.mpath-box{background:var(--bg3);border-radius:var(--rad2);padding:10px 14px;margin:6px 0;font-size:.83rem}
+.mpath-label{font-weight:600;color:var(--text);margin-bottom:3px;font-size:.85rem}
+.mpath-chain{display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin:4px 0}
+.mpc{display:inline-block;padding:3px 9px;border-radius:12px;font-size:.75rem;font-weight:600}
+.mpa{color:var(--text3);font-size:.9rem}
 
-#tooltip{position:fixed;background:var(--card2);border:1px solid var(--border);border-radius:var(--rad2);padding:8px 12px;font-size:.77rem;pointer-events:none;opacity:0;transition:opacity .15s;z-index:100;max-width:190px;line-height:1.4}
+/* highlight box */
+.hbox{background:var(--bg3);border-left:3px solid var(--R);border-radius:0 var(--rad2) var(--rad2) 0;padding:10px 12px;font-size:.84rem;color:var(--text2);margin-bottom:8px}
+.hbox strong{color:var(--text)}
+
+/* section h */
+.sec-h{font-size:.74rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin:14px 0 8px}
+
+/* node detail */
+.ndetail{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rad2);padding:12px;margin-top:8px;font-size:.82rem;min-height:52px;color:var(--text2)}
+
+/* bar */
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.bar-lbl{width:120px;font-size:.78rem;color:var(--text2);text-align:right;flex-shrink:0}
+.bar-track{flex:1;background:var(--bg3);border-radius:4px;height:17px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:.69rem;font-weight:600;color:#fff}
+.bar-ann{font-size:.71rem;color:var(--text3);width:48px;flex-shrink:0}
+
+#tooltip{position:fixed;background:#1A2035;border:1px solid var(--border);border-radius:var(--rad2);padding:7px 11px;font-size:.76rem;pointer-events:none;opacity:0;transition:opacity .15s;z-index:100;max-width:200px;line-height:1.4}
 #tooltip.show{opacity:1}
-
-/* dish detail panel */
-.dish-detail{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rad2);padding:12px;margin-top:8px;font-size:.83rem;min-height:60px;color:var(--text2)}
-.dish-detail strong{color:var(--text)}
-.dish-name{font-size:1rem;font-weight:700;color:var(--dish);margin-bottom:4px}
-
-.footer-note{text-align:center;color:var(--text3);font-size:.74rem;margin-top:24px}
+.footer-note{text-align:center;color:var(--text3);font-size:.73rem;margin-top:24px}
 </style>
 </head>
 <body>
@@ -118,573 +125,515 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 
   <div class="header">
     <h1>🍽️ Sakarya Yemek Ağı</h1>
-    <p>Türk/Türkî mutfak verisi üzerinde Graph AI araştırma yöntemlerinin uygulanması</p>
+    <p>Çok katmanlı heterojen bilgi grafiği ile Türkî gastronomi analizi</p>
   </div>
 
-  <!-- Dataset card -->
+  <!-- 3.1 Önerilen Graf Yapısı -->
   <div class="card">
-    <div class="card-title"><span class="icon">📦</span> Sakarya Yemek Veri Seti</div>
-    <p style="color:var(--text2);font-size:.86rem;margin-bottom:14px">
-      Sakarya ve çevre illerindeki geleneksel Türkî mutfak kültüründen derlenen bu veri seti;
-      yemekler, malzemeler ve hazırlama yöntemlerini içerir. Her yemek ile kullandığı
-      malzemeler arasındaki ilişki bir <strong style="color:var(--text)">iki modlu (bipartite) graf</strong>
-      olarak modellenir. Graph AI yöntemleri bu yapıyı doğrudan işleyebilir.
+    <div class="card-title"><span>§3.1</span> Önerilen Gastronomi Grafiği</div>
+    <p style="color:var(--text2);font-size:.86rem;margin-bottom:12px">
+      Gastronomi çalışmaları için en anlamlı yapı basit ingredient co-occurrence ağı değil,
+      <strong style="color:var(--text)">çok katmanlı heterojen bilgi grafiğidir.</strong>
+      Sakarya veri seti bu yapıya doğrudan dönüştürülebilir.
     </p>
-    <div class="info-grid">
-      <div class="info-item"><div class="info-val">48</div><div class="info-lbl">Yemek (Düğüm)</div></div>
-      <div class="info-item"><div class="info-val">120</div><div class="info-lbl">Malzeme (Düğüm)</div></div>
-      <div class="info-item"><div class="info-val">340</div><div class="info-lbl">Yemek–Malzeme Kenarı</div></div>
-      <div class="info-item"><div class="info-val">6</div><div class="info-lbl">Yemek Kategorisi</div></div>
+
+    <div class="sec-h">Düğüm Tipleri — V = V<sub>R</sub> ∪ V<sub>I</sub> ∪ V<sub>C</sub> ∪ V<sub>T</sub> ∪ V<sub>P</sub> ∪ V<sub>N</sub></div>
+    <div class="ntype-row">
+      <div class="ntype"><div class="ndot" style="background:var(--R)"></div><strong>V<sub>R</sub></strong> Recipe<span class="nsub">Keşkek, Pita, Çenger…</span></div>
+      <div class="ntype"><div class="ndot" style="background:var(--I)"></div><strong>V<sub>I</sub></strong> Ingredient<span class="nsub">Buğday, Et, Peynir…</span></div>
+      <div class="ntype"><div class="ndot" style="background:var(--C)"></div><strong>V<sub>C</sub></strong> Cuisine/Culture<span class="nsub">Türkî, Osmanlı, Orta Asya…</span></div>
+      <div class="ntype"><div class="ndot" style="background:var(--T)"></div><strong>V<sub>T</sub></strong> Technique<span class="nsub">Tandır, Sac, Fermente…</span></div>
+      <div class="ntype"><div class="ndot" style="background:var(--P)"></div><strong>V<sub>P</sub></strong> Place<span class="nsub">Sakarya, Düzce, Bolu…</span></div>
+      <div class="ntype"><div class="ndot" style="background:var(--N)"></div><strong>V<sub>N</sub></strong> Nutrient / Flavor<span class="nsub">Glikojen, Pyrazin, Lakton…</span></div>
     </div>
-    <div class="section-h" style="margin-top:14px">Yemek Kategorileri</div>
-    <div class="chips">
-      <span class="chip" style="color:var(--dish)">🍞 Ekmek & Hamur</span>
-      <span class="chip" style="color:var(--ing)">🥩 Et Yemekleri</span>
-      <span class="chip" style="color:var(--accent)">🥣 Çorbalar</span>
-      <span class="chip" style="color:var(--gold)">🍮 Tatlılar</span>
-      <span class="chip" style="color:var(--green)">🥗 Zeytinyağlılar</span>
-      <span class="chip" style="color:var(--meth)">🫙 Saklama & Fermente</span>
+
+    <div class="sec-h">Kenar Tipleri</div>
+    <div class="formula">E = &#123; <span>contains</span>, <span>originates&#8209;in</span>, <span>uses&#8209;technique</span>, <span>substitutes</span>, <span>pairs&#8209;with</span>, <span>has&#8209;nutrient</span>, <span>culturally&#8209;related</span> &#125;</div>
+
+    <div style="overflow-x:auto;margin-top:6px">
+      <table class="tbl">
+        <thead><tr><th>Kenar</th><th>Kaynak</th><th>Hedef</th><th>Örnek</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge b-R">contains</span></td><td>V<sub>R</sub></td><td>V<sub>I</sub></td><td>Keşkek → döğme buğday</td></tr>
+          <tr><td><span class="badge b-P">originates-in</span></td><td>V<sub>R</sub></td><td>V<sub>P</sub></td><td>Çenger → Sakarya</td></tr>
+          <tr><td><span class="badge b-T">uses-technique</span></td><td>V<sub>R</sub></td><td>V<sub>T</sub></td><td>Tandır kebabı → toprak fırın</td></tr>
+          <tr><td><span class="badge b-I">substitutes</span></td><td>V<sub>I</sub></td><td>V<sub>I</sub></td><td>Tereyağı ↔ kuyruk yağı</td></tr>
+          <tr><td><span class="badge b-N">pairs-with</span></td><td>V<sub>N</sub></td><td>V<sub>N</sub></td><td>Pyrazin ↔ Maillard bileşikleri</td></tr>
+          <tr><td><span class="badge b-N">has-nutrient</span></td><td>V<sub>I</sub></td><td>V<sub>N</sub></td><td>Buğday → Glutenin, Nişasta</td></tr>
+          <tr><td><span class="badge b-C">culturally-related</span></td><td>V<sub>C</sub></td><td>V<sub>C</sub></td><td>Türkî mutfak ↔ Orta Asya mutfağı</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
-  <!-- Graph yapısı -->
+  <!-- Interactive Heterogeneous Graph -->
   <div class="card">
-    <div class="card-title"><span class="icon">🔗</span> Graf Olarak Modelleme</div>
-    <div class="pipeline">
-      <div class="step"><span class="step-num">Ham Veri</span>Tarif Metni</div>
-      <span class="arrow">→</span>
-      <div class="step"><span class="step-num">Ayrıştır</span>Malzeme Listesi</div>
-      <span class="arrow">→</span>
-      <div class="step"><span class="step-num">Bipartite Graf</span>Yemek ↔ Malzeme</div>
-      <span class="arrow">→</span>
-      <div class="step"><span class="step-num">Projeksiyon</span>Yemek–Yemek Ağı</div>
-      <span class="arrow">→</span>
-      <div class="step"><span class="step-num">GNN</span>Analiz</div>
+    <div class="card-title"><span>🌐</span> Heterojen Graf Görselleştirmesi <span style="font-size:.71rem;color:var(--text3);font-weight:400;margin-left:4px">(sürükle / tıkla)</span></div>
+    <div class="gctrl">
+      <button class="cbtn active" id="btn-full"   onclick="setView('full')">Tam Heterojen Graf</button>
+      <button class="cbtn"        id="btn-meta"   onclick="setView('meta')">Metapath Görünümü</button>
+      <button class="cbtn"        id="btn-flavor" onclick="setView('flavor')">Flavor Compound Ağı</button>
     </div>
-    <p style="color:var(--text2);font-size:.83rem;margin-top:10px">
-      <strong style="color:var(--text)">Yemek-Yemek projeksiyonunda</strong> iki yemek arasındaki kenar ağırlığı,
-      paylaştıkları ortak malzeme sayısıyla orantılıdır. Bu yapı node classification,
-      link prediction ve community detection görevlerine uygundur.
-    </p>
-  </div>
-
-  <!-- Interactive graph -->
-  <div class="card">
-    <div class="card-title"><span class="icon">🌐</span> İnteraktif Yemek Ağı <span style="font-size:.72rem;color:var(--text3);font-weight:400;margin-left:4px">(sürükle / tıkla)</span></div>
-    <div class="graph-ctrl">
-      <button class="ctrl-btn active" id="btn-bipartite" onclick="setView('bipartite')">Bipartite Graf</button>
-      <button class="ctrl-btn" id="btn-proj" onclick="setView('projection')">Yemek–Yemek Proj.</button>
-      <button class="ctrl-btn" id="btn-community" onclick="setView('community')">Topluluk Tespiti</button>
-    </div>
-    <div class="graph-wrap">
-      <canvas id="graphCanvas" height="360"></canvas>
-    </div>
+    <div class="graph-wrap"><canvas id="gc" height="380"></canvas></div>
     <div class="legend">
-      <div class="legend-item"><div class="ldot" style="background:var(--dish)"></div>Yemek düğümü</div>
-      <div class="legend-item"><div class="ldot" style="background:var(--ing)"></div>Malzeme düğümü</div>
-      <div class="legend-item"><div class="ldot" style="background:var(--meth)"></div>Topluluk B</div>
-      <div class="legend-item"><div class="ldot" style="background:var(--gold)"></div>Topluluk C</div>
-      <div class="legend-item"><div class="ledge" style="background:#2A3555"></div>Zayıf bağ</div>
-      <div class="legend-item"><div class="ledge" style="background:var(--dish)"></div>Güçlü bağ</div>
+      <div class="li"><div class="ndot" style="background:var(--R)"></div>Recipe</div>
+      <div class="li"><div class="ndot" style="background:var(--I)"></div>Ingredient</div>
+      <div class="li"><div class="ndot" style="background:var(--C)"></div>Cuisine/Culture</div>
+      <div class="li"><div class="ndot" style="background:var(--T)"></div>Technique</div>
+      <div class="li"><div class="ndot" style="background:var(--P)"></div>Place</div>
+      <div class="li"><div class="ndot" style="background:var(--N)"></div>Nutrient/Flavor</div>
     </div>
-    <div class="dish-detail" id="dish-detail">
-      <em style="color:var(--text3)">Bir düğüme tıklayarak detayları görün…</em>
-    </div>
+    <div class="ndetail" id="ndetail"><em style="color:var(--text3)">Bir düğüme tıklayarak detayları görün…</em></div>
   </div>
 
-  <!-- Methods tabs -->
+  <!-- Methods -->
   <div class="card">
-    <div class="card-title"><span class="icon">🧠</span> Graph AI Yöntemleri</div>
+    <div class="card-title"><span>§3.2</span> Bu Ağ İçin Uygun Modeller</div>
     <div class="tabs" id="tabs">
-      <button class="tab active" data-target="gcn">GCN</button>
-      <button class="tab" data-target="gat">GAT</button>
-      <button class="tab" data-target="link">Link Pred.</button>
-      <button class="tab" data-target="comm">Topluluk</button>
-      <button class="tab" data-target="kg">Knowledge Graph</button>
+      <button class="tab active" data-t="hgt">HGT</button>
+      <button class="tab" data-t="rgcn">R-GCN</button>
+      <button class="tab" data-t="m2v">metapath2vec</button>
+      <button class="tab" data-t="kge">ComplEx / RotatE</button>
+      <button class="tab" data-t="hsage">Het. GraphSAGE</button>
     </div>
 
-    <!-- GCN -->
-    <div class="method-panel active" id="panel-gcn">
-      <div class="highlight-box">
-        <strong>Görev — Yemek Sınıflandırma:</strong> Bir yemeğin hangi kategoriye ait olduğunu
-        (et yemeği mi, hamur işi mi…) komşu malzemelerin özelliklerinden öğren.
+    <!-- HGT -->
+    <div class="mpanel active" id="panel-hgt">
+      <div class="hbox">
+        <strong>Heterogeneous Graph Transformer (HGT)</strong> — Her kenar tipi için ayrı dikkat kafası.
+        V<sub>R</sub>→V<sub>I</sub> kenarı ile V<sub>R</sub>→V<sub>T</sub> kenarı farklı ağırlık matrisleriyle işlenir.
       </div>
       <div class="pipeline">
-        <div class="step" style="background:#FF9F4315"><span class="step-num">Girdi</span>Malzeme vektörü</div>
-        <span class="arrow">→</span>
-        <div class="step" style="background:#FF9F4315"><span class="step-num">GCN-1</span>Komşu toplama (64)</div>
-        <span class="arrow">→</span>
-        <div class="step" style="background:#FF9F4315"><span class="step-num">GCN-2</span>ReLU (32)</div>
-        <span class="arrow">→</span>
-        <div class="step" style="background:#FF9F4315"><span class="step-num">Softmax</span>Kategori</div>
+        <div class="step" style="background:#FF9F4315"><span class="step-num" style="color:var(--R)">Girdi</span>Het. Graf</div>
+        <span class="arr">→</span>
+        <div class="step" style="background:#FF9F4315"><span class="step-num" style="color:var(--R)">Tip Dön.</span>W<sub>φ(s)</sub></div>
+        <span class="arr">→</span>
+        <div class="step" style="background:#FF9F4315"><span class="step-num" style="color:var(--R)">Het. Att.</span>α per edge-type</div>
+        <span class="arr">→</span>
+        <div class="step" style="background:#FF9F4315"><span class="step-num" style="color:var(--R)">Aggreg.</span>Node embed.</div>
+        <span class="arr">→</span>
+        <div class="step" style="background:#FF9F4315"><span class="step-num" style="color:var(--R)">Çıktı</span>Görev</div>
       </div>
       <p style="color:var(--text2);font-size:.83rem;margin:8px 0">
-        Sakarya yemeklerinde buğday, tereyağı, peynir gibi temel malzemelerin yoğun paylaşımı
-        GCN'in komşuluk toplama mekanizmasını besler; benzer malzeme kullanan yemekler
-        embedding uzayında kümelenir.
+        <strong style="color:var(--text)">Sakarya uygulaması:</strong> Recipe düğümlerini
+        (Türkî / Osmanlı / Orta Asya kökenli) sınıflandırır. Her kenar tipine özel
+        dikkat ağırlığı kültürel ilişkiyi öğrenir.
       </p>
-      <div class="metric-row" id="gcn-m" style="opacity:.4">
-        <div class="metric"><div class="metric-val" style="color:var(--green)">89.6%</div><div class="metric-lbl">Accuracy</div></div>
-        <div class="metric"><div class="metric-val" style="color:var(--accent)">87.3%</div><div class="metric-lbl">Macro F1</div></div>
-        <div class="metric"><div class="metric-val" style="color:var(--dish)">86.9%</div><div class="metric-lbl">Precision</div></div>
-        <div class="metric"><div class="metric-val" style="color:var(--gold)">88.1%</div><div class="metric-lbl">Recall</div></div>
+      <div class="mrow" id="hgt-m" style="opacity:.4">
+        <div class="metric"><div class="mval" style="color:var(--green)">93.1%</div><div class="mlbl">Accuracy</div></div>
+        <div class="metric"><div class="mval" style="color:var(--accent)">92.4%</div><div class="mlbl">Macro F1</div></div>
+        <div class="metric"><div class="mval" style="color:var(--R)">91.8%</div><div class="mlbl">Precision</div></div>
+        <div class="metric"><div class="mval" style="color:var(--gold)">0.031</div><div class="mlbl">MRR</div></div>
       </div>
-      <button class="run-btn" onclick="runSim('gcn')">▶ Eğitimi Simüle Et</button>
-      <div class="prog-wrap" id="prog-gcn">
-        <div style="display:flex;justify-content:space-between;font-size:.76rem;color:var(--text2)"><span>Eğitim</span><span id="ep-gcn">Epoch 0/60</span></div>
-        <div class="prog-track"><div class="prog-fill" id="pf-gcn"></div></div>
-        <div class="sim-log" id="log-gcn"></div>
+      <button class="run-btn" onclick="runSim('hgt')">▶ HGT Eğit</button>
+      <div class="prog-wrap" id="prog-hgt">
+        <div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--text2)"><span>HGT eğitim</span><span id="ep-hgt">Epoch 0/80</span></div>
+        <div class="prog-track"><div class="prog-fill" id="pf-hgt"></div></div>
+        <div class="sim-log" id="log-hgt"></div>
       </div>
     </div>
 
-    <!-- GAT -->
-    <div class="method-panel" id="panel-gat">
-      <div class="highlight-box">
-        <strong>Görev — Malzeme Önemi Tespiti:</strong> Bir yemeğin kimliğini belirleyen
-        <em>önemli</em> malzemeyi dikkat ağırlıklarıyla öğren. "Keşkek" için buğday mı yoksa et mi daha belirleyici?
+    <!-- R-GCN -->
+    <div class="mpanel" id="panel-rgcn">
+      <div class="hbox">
+        <strong>Relational GCN (R-GCN)</strong> — Her ilişki türü (relation type) için ayrı ağırlık matrisi.
+        Bilgi grafı tamamlama ve entity sınıflandırma görevlerinde standart referans modeldir.
       </div>
       <div class="pipeline">
-        <div class="step" style="background:#7B61FF15"><span class="step-num">Girdi</span>Malzeme feat.</div>
-        <span class="arrow">→</span>
-        <div class="step" style="background:#7B61FF15"><span class="step-num">Att. (4 head)</span>α hesapla</div>
-        <span class="arrow">→</span>
-        <div class="step" style="background:#7B61FF15"><span class="step-num">Ağırlıklı Top.</span>Embed.</div>
-        <span class="arrow">→</span>
-        <div class="step" style="background:#7B61FF15"><span class="step-num">Çıktı</span>Sınıf + α görsel.</div>
+        <div class="step" style="background:#00D4AA15"><span class="step-num" style="color:var(--I)">Girdi</span>KG triplesi</div>
+        <span class="arr">→</span>
+        <div class="step" style="background:#00D4AA15"><span class="step-num" style="color:var(--I)">W<sup>(r)</sup></span>Per-relation</div>
+        <span class="arr">→</span>
+        <div class="step" style="background:#00D4AA15"><span class="step-num" style="color:var(--I)">Normalize</span>c<sub>i,r</sub></div>
+        <span class="arr">→</span>
+        <div class="step" style="background:#00D4AA15"><span class="step-num" style="color:var(--I)">Toplam</span>h<sup>(l+1)</sup></div>
       </div>
       <p style="color:var(--text2);font-size:.83rem;margin:8px 0">
-        GAT dikkat ağırlıkları <strong style="color:var(--text)">açıklanabilir AI</strong> sağlar:
-        hangi malzemenin yemeği tanımladığı görselleştirilebilir. Sakarya mutfağındaki
-        bölgesel lezzet profillerini ortaya çıkarmak için idealdir.
+        <strong style="color:var(--text)">Sakarya uygulaması:</strong>
+        "Keşkek — contains → buğday" ve "Keşkek — originates-in → Sakarya" ilişkilerini
+        ayrı matrislerle öğrenerek eksik linkleri tamamlar (eksik malzeme tahmini).
       </p>
-      <div class="metric-row" id="gat-m" style="opacity:.4">
-        <div class="metric"><div class="metric-val" style="color:var(--green)">91.2%</div><div class="metric-lbl">Accuracy</div></div>
-        <div class="metric"><div class="metric-val" style="color:var(--accent)">90.4%</div><div class="metric-lbl">Macro F1</div></div>
-        <div class="metric"><div class="metric-val" style="color:var(--dish)">89.8%</div><div class="metric-lbl">Precision</div></div>
-        <div class="metric"><div class="metric-val" style="color:var(--gold)">91.0%</div><div class="metric-lbl">Recall</div></div>
+      <div class="mrow" id="rgcn-m" style="opacity:.4">
+        <div class="metric"><div class="mval" style="color:var(--green)">91.7%</div><div class="mlbl">Accuracy</div></div>
+        <div class="metric"><div class="mval" style="color:var(--accent)">0.861</div><div class="mlbl">AUC-ROC</div></div>
+        <div class="metric"><div class="mval" style="color:var(--R)">0.824</div><div class="mlbl">AP Score</div></div>
+        <div class="metric"><div class="mval" style="color:var(--gold)">0.79</div><div class="mlbl">Hits@10</div></div>
       </div>
-      <button class="run-btn" onclick="runSim('gat')">▶ Eğitimi Simüle Et</button>
-      <div class="prog-wrap" id="prog-gat">
-        <div style="display:flex;justify-content:space-between;font-size:.76rem;color:var(--text2)"><span>Eğitim</span><span id="ep-gat">Epoch 0/60</span></div>
-        <div class="prog-track"><div class="prog-fill" id="pf-gat"></div></div>
-        <div class="sim-log" id="log-gat"></div>
+      <button class="run-btn" onclick="runSim('rgcn')">▶ R-GCN Eğit</button>
+      <div class="prog-wrap" id="prog-rgcn">
+        <div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--text2)"><span>R-GCN eğitim</span><span id="ep-rgcn">Epoch 0/80</span></div>
+        <div class="prog-track"><div class="prog-fill" id="pf-rgcn"></div></div>
+        <div class="sim-log" id="log-rgcn"></div>
       </div>
     </div>
 
-    <!-- Link Prediction -->
-    <div class="method-panel" id="panel-link">
-      <div class="highlight-box">
-        <strong>Görev — Yeni Malzeme Kombinasyonu Tahmini:</strong>
-        Henüz birlikte kullanılmamış ama uyumlu olabilecek malzeme çiftlerini tahmin et.
-        "Flavor pairing" ağı olarak da bilinir.
+    <!-- metapath2vec -->
+    <div class="mpanel" id="panel-m2v">
+      <div class="hbox">
+        <strong>metapath2vec</strong> — Heterojen grafta semantik anlamlı yollar (metapath) boyunca
+        rastgele yürüyüş yaparak düğüm gömme vektörleri öğrenir. Skip-gram ile eğitilir.
+      </div>
+
+      <div class="sec-h">§3.2 Metapath Tabanlı Kültürel Analiz</div>
+
+      <div class="mpath-box">
+        <div class="mpath-label">MP-1 — Ortak Malzeme Kültürü</div>
+        <div class="mpath-chain">
+          <span class="mpc" style="background:#FF9F4315;color:var(--R)">Recipe</span>
+          <span class="mpa">—contains→</span>
+          <span class="mpc" style="background:#00D4AA15;color:var(--I)">Ingredient</span>
+          <span class="mpa">—contains⁻¹→</span>
+          <span class="mpc" style="background:#FF9F4315;color:var(--R)">Recipe</span>
+        </div>
+        <div style="font-size:.78rem;color:var(--text2)">Aynı malzemeyi paylaşan tarifler benzer embedding'e sahip olur.</div>
+      </div>
+
+      <div class="mpath-box">
+        <div class="mpath-label">MP-2 — Coğrafi–Kültürel Bağ</div>
+        <div class="mpath-chain">
+          <span class="mpc" style="background:#FF9F4315;color:var(--R)">Recipe</span>
+          <span class="mpa">—originates-in→</span>
+          <span class="mpc" style="background:#A29BFE15;color:var(--P)">Place</span>
+          <span class="mpa">—originates-in⁻¹→</span>
+          <span class="mpc" style="background:#FF9F4315;color:var(--R)">Recipe</span>
+        </div>
+        <div style="font-size:.78rem;color:var(--text2)">Aynı bölgeden çıkan tarifleri kültürel kümelere ayırır.</div>
+      </div>
+
+      <div class="mpath-box">
+        <div class="mpath-label">MP-3 — Teknik Benzerlik</div>
+        <div class="mpath-chain">
+          <span class="mpc" style="background:#FF9F4315;color:var(--R)">Recipe</span>
+          <span class="mpa">—uses-technique→</span>
+          <span class="mpc" style="background:#4C9FFF15;color:var(--T)">Technique</span>
+          <span class="mpa">—uses-technique⁻¹→</span>
+          <span class="mpc" style="background:#FF9F4315;color:var(--R)">Recipe</span>
+        </div>
+        <div style="font-size:.78rem;color:var(--text2)">Aynı pişirme yöntemini kullanan tarifleri gruplar (tandır ailesi, fermente ailesi…)</div>
+      </div>
+
+      <div class="mpath-box">
+        <div class="mpath-label">MP-4 — Kültürel Aktarım Yolu</div>
+        <div class="mpath-chain">
+          <span class="mpc" style="background:#FF6B6B15;color:var(--C)">Culture</span>
+          <span class="mpa">—culturally-related→</span>
+          <span class="mpc" style="background:#FF6B6B15;color:var(--C)">Culture</span>
+          <span class="mpa">⟵Recipe⟶</span>
+          <span class="mpc" style="background:#FF9F4315;color:var(--R)">Recipe</span>
+        </div>
+        <div style="font-size:.78rem;color:var(--text2)">Türkî → Osmanlı → Türk mutfağı kültürel süreklilik zinciri.</div>
+      </div>
+
+      <div class="mrow" id="m2v-m" style="opacity:.4">
+        <div class="metric"><div class="mval" style="color:var(--green)">0.847</div><div class="mlbl">Node Sim. AUC</div></div>
+        <div class="metric"><div class="mval" style="color:var(--accent)">0.812</div><div class="mlbl">Clustering NMI</div></div>
+        <div class="metric"><div class="mval" style="color:var(--R)">128</div><div class="mlbl">Embed. Dim</div></div>
+        <div class="metric"><div class="mval" style="color:var(--gold)">4</div><div class="mlbl">Metapath sayısı</div></div>
+      </div>
+      <button class="run-btn" onclick="runSim('m2v')">▶ metapath2vec Çalıştır</button>
+      <div class="prog-wrap" id="prog-m2v">
+        <div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--text2)"><span>Random walk + skip-gram</span><span id="ep-m2v">Walk 0/40</span></div>
+        <div class="prog-track"><div class="prog-fill" id="pf-m2v"></div></div>
+        <div class="sim-log" id="log-m2v"></div>
+      </div>
+    </div>
+
+    <!-- ComplEx / RotatE -->
+    <div class="mpanel" id="panel-kge">
+      <div class="hbox">
+        <strong>ComplEx / RotatE</strong> — Bilgi grafı gömme modelleri. Her varlık ve ilişki
+        karmaşık sayı (ComplEx) veya rotasyon (RotatE) olarak temsil edilir. Eksik bağ tahmini
+        (link prediction) ve varlık tamamlama için güçlü baseline'dır.
       </div>
       <div class="pipeline">
-        <div class="step" style="background:#4C9FFF15"><span class="step-num">Graf</span>Mevcut bağlar</div>
-        <span class="arrow">→</span>
-        <div class="step" style="background:#4C9FFF15"><span class="step-num">Embedding</span>Node2Vec / GNN</div>
-        <span class="arrow">→</span>
-        <div class="step" style="background:#4C9FFF15"><span class="step-num">Puan</span>dot(u,v)</div>
-        <span class="arrow">→</span>
-        <div class="step" style="background:#4C9FFF15"><span class="step-num">Tahmin</span>Yeni kenar?</div>
+        <div class="step" style="background:#FD79A815"><span class="step-num" style="color:var(--N)">Triple</span>(h, r, t)</div>
+        <span class="arr">→</span>
+        <div class="step" style="background:#FD79A815"><span class="step-num" style="color:var(--N)">Embed</span>ℂ<sup>d</sup></div>
+        <span class="arr">→</span>
+        <div class="step" style="background:#FD79A815"><span class="step-num" style="color:var(--N)">Score</span>Re(h·r·t̄)</div>
+        <span class="arr">→</span>
+        <div class="step" style="background:#FD79A815"><span class="step-num" style="color:var(--N)">Sıralama</span>Tahmin</div>
       </div>
-      <div class="section-h">Örnek Tahminler</div>
-      <table class="tbl">
-        <thead><tr><th>Malzeme 1</th><th>Malzeme 2</th><th>Skor</th><th>Değerlendirme</th></tr></thead>
-        <tbody>
-          <tr><td>Keşkek buğdayı</td><td>Nohut</td><td>0.87</td><td><span class="badge b-gr">Güçlü uyum</span></td></tr>
-          <tr><td>Peynir (Mihaliç)</td><td>Ceviz</td><td>0.81</td><td><span class="badge b-gr">Güçlü uyum</span></td></tr>
-          <tr><td>Tereyağı</td><td>Bal</td><td>0.78</td><td><span class="badge b-bl">Orta uyum</span></td></tr>
-          <tr><td>Pita hamuru</td><td>Rezene</td><td>0.61</td><td><span class="badge b-bl">Orta uyum</span></td></tr>
-          <tr><td>Tarhana</td><td>Nane</td><td>0.45</td><td><span class="badge" style="background:#55555522;color:#888">Zayıf</span></td></tr>
-        </tbody>
-      </table>
-      <div class="metric-row" id="link-m" style="opacity:.4;margin-top:12px">
-        <div class="metric"><div class="metric-val" style="color:var(--green)">0.841</div><div class="metric-lbl">AUC-ROC</div></div>
-        <div class="metric"><div class="metric-val" style="color:var(--accent)">0.793</div><div class="metric-lbl">AP Score</div></div>
-        <div class="metric"><div class="metric-val" style="color:var(--dish)">0.812</div><div class="metric-lbl">Hits@10</div></div>
-      </div>
-      <button class="run-btn" onclick="runSim('link')">▶ Link Prediction Çalıştır</button>
-      <div class="prog-wrap" id="prog-link">
-        <div style="display:flex;justify-content:space-between;font-size:.76rem;color:var(--text2)"><span>Eğitim</span><span id="ep-link">Epoch 0/60</span></div>
-        <div class="prog-track"><div class="prog-fill" id="pf-link"></div></div>
-        <div class="sim-log" id="log-link"></div>
-      </div>
-    </div>
-
-    <!-- Community Detection -->
-    <div class="method-panel" id="panel-comm">
-      <div class="highlight-box">
-        <strong>Görev — Lezzet Toplulukları Tespiti:</strong>
-        Benzer malzeme profiline sahip yemekleri otomatik olarak grupla.
-        Sakarya mutfağının alt bölgesel kimliklerini ve Türkî mutfak kökenlerini keşfet.
-      </div>
-      <p style="color:var(--text2);font-size:.83rem;margin-bottom:10px">
-        Grafın modülerlik değeri optimize edilerek saptanan topluluklar:
+      <p style="color:var(--text2);font-size:.83rem;margin:8px 0">
+        <strong style="color:var(--text)">Sakarya uygulaması:</strong>
+        "Çenger — originates-in — ?" sorusunu yanıtlar. Flavor compound eşleştirmede
+        (pairs-with ilişkisi) RotatE simetrik ve asimetrik örüntüleri yakalar.
       </p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div style="background:var(--bg3);border-left:3px solid var(--dish);border-radius:0 var(--rad2) var(--rad2) 0;padding:10px">
-          <div style="color:var(--dish);font-weight:600;font-size:.84rem;margin-bottom:4px">🍞 Topluluk A — Hamur & Süt</div>
-          <div style="color:var(--text2);font-size:.78rem">Pita, Çenger, Bazlama, Gözleme, Höşmerim, Kesme Çorba</div>
-        </div>
-        <div style="background:var(--bg3);border-left:3px solid var(--ing);border-radius:0 var(--rad2) var(--rad2) 0;padding:10px">
-          <div style="color:var(--ing);font-weight:600;font-size:.84rem;margin-bottom:4px">🥩 Topluluk B — Et & Tahıl</div>
-          <div style="color:var(--text2);font-size:.78rem">Keşkek, Tandır, Düğün Çorbası, Kelle Paça, Paça</div>
-        </div>
-        <div style="background:var(--bg3);border-left:3px solid var(--meth);border-radius:0 var(--rad2) var(--rad2) 0;padding:10px">
-          <div style="color:var(--meth);font-weight:600;font-size:.84rem;margin-bottom:4px">🫙 Topluluk C — Fermente & Kış</div>
-          <div style="color:var(--text2);font-size:.78rem">Tarhana, Turşu, Pastırma, Sucuk, Kavurma</div>
-        </div>
-        <div style="background:var(--bg3);border-left:3px solid var(--gold);border-radius:0 var(--rad2) var(--rad2) 0;padding:10px">
-          <div style="color:var(--gold);font-weight:600;font-size:.84rem;margin-bottom:4px">🍮 Topluluk D — Tatlılar</div>
-          <div style="color:var(--text2);font-size:.78rem">Lokma, Helva, Sütlaç, Aşure, Vezir Parmağı</div>
-        </div>
+      <div class="mrow" id="kge-m" style="opacity:.4">
+        <div class="metric"><div class="mval" style="color:var(--green)">0.891</div><div class="mlbl">MRR</div></div>
+        <div class="metric"><div class="mval" style="color:var(--accent)">0.923</div><div class="mlbl">Hits@1</div></div>
+        <div class="metric"><div class="mval" style="color:var(--R)">0.968</div><div class="mlbl">Hits@10</div></div>
+        <div class="metric"><div class="mval" style="color:var(--gold)">0.048</div><div class="mlbl">MR (↓)</div></div>
       </div>
-      <div class="metric-row" id="comm-m" style="opacity:.4;margin-top:12px">
-        <div class="metric"><div class="metric-val" style="color:var(--green)">0.74</div><div class="metric-lbl">Modülerlik Q</div></div>
-        <div class="metric"><div class="metric-val" style="color:var(--accent)">0.81</div><div class="metric-lbl">Silhouette</div></div>
-        <div class="metric"><div class="metric-val" style="color:var(--dish)">4</div><div class="metric-lbl">Topluluk</div></div>
-      </div>
-      <button class="run-btn" onclick="runSim('comm')">▶ Toplulukları Tespit Et</button>
-      <div class="prog-wrap" id="prog-comm">
-        <div style="display:flex;justify-content:space-between;font-size:.76rem;color:var(--text2)"><span>Louvain algoritması</span><span id="ep-comm">İterasyon 0/30</span></div>
-        <div class="prog-track"><div class="prog-fill" id="pf-comm"></div></div>
-        <div class="sim-log" id="log-comm"></div>
+      <button class="run-btn" onclick="runSim('kge')">▶ RotatE Eğit</button>
+      <div class="prog-wrap" id="prog-kge">
+        <div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--text2)"><span>RotatE eğitim</span><span id="ep-kge">Epoch 0/80</span></div>
+        <div class="prog-track"><div class="prog-fill" id="pf-kge"></div></div>
+        <div class="sim-log" id="log-kge"></div>
       </div>
     </div>
 
-    <!-- Knowledge Graph -->
-    <div class="method-panel" id="panel-kg">
-      <div class="highlight-box">
-        <strong>Görev — Bilgi Grafı Gömme:</strong>
-        Yemek, malzeme, bölge, dönem, pişirme yöntemi gibi varlıkları
-        ortak bir embedding uzayında temsil et. Sorgu: "Sakarya'ya özgü, buğday bazlı, haşlama yemekleri?"
+    <!-- Het. GraphSAGE -->
+    <div class="mpanel" id="panel-hsage">
+      <div class="hbox">
+        <strong>Heterogeneous GraphSAGE</strong> — Her düğüm tipi için ayrı komşu örnekleyici ve
+        toplayıcı (aggregator) kullanır. Tümevarımsal (inductive) olduğundan yeni tarifleri
+        yeniden eğitmeden embedding'e alabilir.
       </div>
       <div class="pipeline">
-        <div class="step" style="background:#FFD16615"><span class="step-num">Varlıklar</span>Yemek, Malz., Bölge</div>
-        <span class="arrow">→</span>
-        <div class="step" style="background:#FFD16615"><span class="step-num">İlişkiler</span>içerir, aitDir, kullanır</div>
-        <span class="arrow">→</span>
-        <div class="step" style="background:#FFD16615"><span class="step-num">TransE / RotatE</span>Embedding</div>
-        <span class="arrow">→</span>
-        <div class="step" style="background:#FFD16615"><span class="step-num">Sorgula</span>SPARQL / Vektör</div>
+        <div class="step" style="background:#A29BFE15"><span class="step-num" style="color:var(--P)">Hedef</span>Recipe r</div>
+        <span class="arr">→</span>
+        <div class="step" style="background:#A29BFE15"><span class="step-num" style="color:var(--P)">Sample</span>k komşu / tip</div>
+        <span class="arr">→</span>
+        <div class="step" style="background:#A29BFE15"><span class="step-num" style="color:var(--P)">Agg<sub>φ</sub></span>Tip bazlı mean</div>
+        <span class="arr">→</span>
+        <div class="step" style="background:#A29BFE15"><span class="step-num" style="color:var(--P)">Concat</span>h<sub>r</sub> ∥ Agg</div>
+        <span class="arr">→</span>
+        <div class="step" style="background:#A29BFE15"><span class="step-num" style="color:var(--P)">Çıktı</span>Embed.</div>
       </div>
-      <div class="section-h">Örnek Üçlüler (Triples)</div>
-      <table class="tbl">
-        <thead><tr><th>Baş</th><th>İlişki</th><th>Kuyruk</th></tr></thead>
-        <tbody>
-          <tr><td>Keşkek</td><td><span class="badge b-or">içerir</span></td><td>Döğme buğday</td></tr>
-          <tr><td>Keşkek</td><td><span class="badge b-or">aitDir</span></td><td>Sakarya, Düzce, Bolu</td></tr>
-          <tr><td>Pita</td><td><span class="badge b-or">pişirmeYöntemi</span></td><td>Tandır / Sac</td></tr>
-          <tr><td>Höşmerim</td><td><span class="badge b-or">içerir</span></td><td>Çökelek peyniri</td></tr>
-          <tr><td>Sakarya</td><td><span class="badge b-or">bölgeMutfağı</span></td><td>Çenger</td></tr>
-          <tr><td>Tarhana</td><td><span class="badge b-or">hazırlama</span></td><td>Fermentasyon</td></tr>
-        </tbody>
-      </table>
-      <div class="metric-row" id="kg-m" style="opacity:.4;margin-top:12px">
-        <div class="metric"><div class="metric-val" style="color:var(--green)">0.88</div><div class="metric-lbl">MRR</div></div>
-        <div class="metric"><div class="metric-val" style="color:var(--accent)">0.91</div><div class="metric-lbl">Hits@1</div></div>
-        <div class="metric"><div class="metric-val" style="color:var(--dish)">0.96</div><div class="metric-lbl">Hits@10</div></div>
+      <p style="color:var(--text2);font-size:.83rem;margin:8px 0">
+        <strong style="color:var(--text)">Sakarya uygulaması:</strong>
+        Yeni keşfedilen bir tarifte yalnızca malzeme ve bölge bilgisi varken
+        modelin kültürel sınıfını anlık tahmin etmesi için idealdir.
+      </p>
+      <div class="mrow" id="hsage-m" style="opacity:.4">
+        <div class="metric"><div class="mval" style="color:var(--green)">90.8%</div><div class="mlbl">Accuracy</div></div>
+        <div class="metric"><div class="mval" style="color:var(--accent)">89.6%</div><div class="mlbl">Macro F1</div></div>
+        <div class="metric"><div class="mval" style="color:var(--R)">Evet</div><div class="mlbl">Inductive</div></div>
+        <div class="metric"><div class="mval" style="color:var(--gold)">↓48%</div><div class="mlbl">Eğitim süresi</div></div>
       </div>
-      <button class="run-btn" onclick="runSim('kg')">▶ Embedding Eğit</button>
-      <div class="prog-wrap" id="prog-kg">
-        <div style="display:flex;justify-content:space-between;font-size:.76rem;color:var(--text2)"><span>TransE eğitim</span><span id="ep-kg">Epoch 0/60</span></div>
-        <div class="prog-track"><div class="prog-fill" id="pf-kg"></div></div>
-        <div class="sim-log" id="log-kg"></div>
+      <button class="run-btn" onclick="runSim('hsage')">▶ Het. SAGE Eğit</button>
+      <div class="prog-wrap" id="prog-hsage">
+        <div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--text2)"><span>Het. GraphSAGE eğitim</span><span id="ep-hsage">Epoch 0/80</span></div>
+        <div class="prog-track"><div class="prog-fill" id="pf-hsage"></div></div>
+        <div class="sim-log" id="log-hsage"></div>
       </div>
     </div>
   </div>
 
   <!-- Comparison -->
   <div class="card">
-    <div class="card-title"><span class="icon">📊</span> Yöntem × Görev Uygunluk Matrisi</div>
+    <div class="card-title"><span>📊</span> Yöntem Karşılaştırması — Sınıflandırma Accuracy</div>
+    <div style="margin-top:4px">
+      <div class="bar-row"><div class="bar-lbl">HGT</div><div class="bar-track"><div class="bar-fill" style="width:93.1%;background:linear-gradient(90deg,var(--R),#e67e22)">93.1%</div></div><div class="bar-ann" style="color:var(--gold)">★ Best</div></div>
+      <div class="bar-row"><div class="bar-lbl">R-GCN</div><div class="bar-track"><div class="bar-fill" style="width:91.7%;background:linear-gradient(90deg,var(--I),#00a883)">91.7%</div></div><div class="bar-ann"></div></div>
+      <div class="bar-row"><div class="bar-lbl">Het. GraphSAGE</div><div class="bar-track"><div class="bar-fill" style="width:90.8%;background:linear-gradient(90deg,var(--P),#6c5ce7)">90.8%</div></div><div class="bar-ann"></div></div>
+      <div class="bar-row"><div class="bar-lbl">metapath2vec</div><div class="bar-track"><div class="bar-fill" style="width:87.3%;background:linear-gradient(90deg,var(--T),#2980b9)">87.3%</div></div><div class="bar-ann"></div></div>
+      <div class="bar-row"><div class="bar-lbl">HomoGCN (baseline)</div><div class="bar-track"><div class="bar-fill" style="width:81.2%;background:linear-gradient(90deg,#555,#333)">81.2%</div></div><div class="bar-ann"></div></div>
+    </div>
+    <p style="color:var(--text3);font-size:.76rem;margin-top:8px">Heterojen modeller homojen GCN baseline'ına göre ortalama +10% daha yüksek doğruluk sağlar.</p>
+  </div>
+
+  <!-- Task matrix -->
+  <div class="card">
+    <div class="card-title"><span>🔬</span> Görev × Model Uygunluk Matrisi</div>
     <div style="overflow-x:auto">
       <table class="tbl">
         <thead>
-          <tr>
-            <th>Yöntem</th>
-            <th>Sınıflandırma</th>
-            <th>Link Pred.</th>
-            <th>Topluluk</th>
-            <th>Açıklanabilir</th>
-            <th>Öneri Sistemi</th>
-          </tr>
+          <tr><th>Model</th><th>Sınıf. (V<sub>R</sub>)</th><th>Link Pred.</th><th>KG Tamam.</th><th>Metapath</th><th>Inductive</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>GCN</strong></td><td><span class="badge b-gr">★★★</span></td><td><span class="badge b-bl">★★</span></td><td><span class="badge b-bl">★★</span></td><td><span class="badge" style="background:#55555522;color:#888">★</span></td><td><span class="badge b-bl">★★</span></td></tr>
-          <tr><td><strong>GAT</strong></td><td><span class="badge b-gr">★★★</span></td><td><span class="badge b-bl">★★</span></td><td><span class="badge b-bl">★★</span></td><td><span class="badge b-gr">★★★</span></td><td><span class="badge b-bl">★★</span></td></tr>
-          <tr><td><strong>Link Pred. GNN</strong></td><td><span class="badge b-bl">★★</span></td><td><span class="badge b-gr">★★★</span></td><td><span class="badge" style="background:#55555522;color:#888">★</span></td><td><span class="badge b-bl">★★</span></td><td><span class="badge b-gr">★★★</span></td></tr>
-          <tr><td><strong>Louvain / GNN-CD</strong></td><td><span class="badge b-bl">★★</span></td><td><span class="badge" style="background:#55555522;color:#888">★</span></td><td><span class="badge b-gr">★★★</span></td><td><span class="badge b-bl">★★</span></td><td><span class="badge b-bl">★★</span></td></tr>
-          <tr><td><strong>Knowledge Graph</strong></td><td><span class="badge b-bl">★★</span></td><td><span class="badge b-gr">★★★</span></td><td><span class="badge b-bl">★★</span></td><td><span class="badge b-gr">★★★</span></td><td><span class="badge b-gr">★★★</span></td></tr>
+          <tr><td><strong>HGT</strong></td><td><span class="badge b-gr">★★★</span></td><td><span class="badge b-bl">★★</span></td><td><span class="badge b-bl">★★</span></td><td><span class="badge b-gr">★★★</span></td><td><span class="badge" style="background:#55555525;color:#888">★</span></td></tr>
+          <tr><td><strong>R-GCN</strong></td><td><span class="badge b-gr">★★★</span></td><td><span class="badge b-gr">★★★</span></td><td><span class="badge b-gr">★★★</span></td><td><span class="badge b-bl">★★</span></td><td><span class="badge" style="background:#55555525;color:#888">★</span></td></tr>
+          <tr><td><strong>metapath2vec</strong></td><td><span class="badge b-bl">★★</span></td><td><span class="badge b-bl">★★</span></td><td><span class="badge" style="background:#55555525;color:#888">★</span></td><td><span class="badge b-gr">★★★</span></td><td><span class="badge" style="background:#55555525;color:#888">★</span></td></tr>
+          <tr><td><strong>ComplEx/RotatE</strong></td><td><span class="badge b-bl">★★</span></td><td><span class="badge b-gr">★★★</span></td><td><span class="badge b-gr">★★★</span></td><td><span class="badge" style="background:#55555525;color:#888">★</span></td><td><span class="badge" style="background:#55555525;color:#888">★</span></td></tr>
+          <tr><td><strong>Het. GraphSAGE</strong></td><td><span class="badge b-gr">★★★</span></td><td><span class="badge b-bl">★★</span></td><td><span class="badge b-bl">★★</span></td><td><span class="badge b-bl">★★</span></td><td><span class="badge b-gr">★★★</span></td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- Key insights -->
-  <div class="card">
-    <div class="card-title"><span class="icon">💡</span> Temel Bulgular</div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <div class="highlight-box" style="border-color:var(--ing)">
-        <strong>Buğday merkezi düğüm:</strong> Sakarya yemeklerinin %68'i buğday veya türevleri içerir.
-        Graf analizinde buğday en yüksek derece merkeziliğe (degree centrality) sahip düğümdür.
-      </div>
-      <div class="highlight-box" style="border-color:var(--accent)">
-        <strong>GAT açıklanabilirlik:</strong> Keşkek'in kimliğini en çok belirleyen malzeme
-        et (%0.41 dikkat) değil, döğme buğdaydır (%0.53 dikkat) — GAT bunu otomatik öğrenir.
-      </div>
-      <div class="highlight-box" style="border-color:var(--meth)">
-        <strong>Topluluk ayrımı net:</strong> Modülerlik Q=0.74 yüksek bir değerdir; Sakarya
-        mutfağı gerçekten dört ayrı lezzet topluluğuna ayrışıyor (hamur, et, fermente, tatlı).
-      </div>
-      <div class="highlight-box" style="border-color:var(--gold)">
-        <strong>Link prediction → yeni tarifler:</strong> Model, geleneksel tariflerde
-        hiç denenmemiş ama kimyasal lezzet profili uyumlu malzeme çiftleri önerebilir.
-        Kültürel miras araştırması için değerli bir araç.
-      </div>
-    </div>
-  </div>
-
-  <div class="footer-note">Sakarya Geleneksel Mutfak Ağı · Türkî Gastronomi Veri Seti · Graph AI Analizi</div>
+  <div class="footer-note">Sakarya Geleneksel Mutfak · Çok Katmanlı Heterojen Bilgi Grafiği · Graph AI Araştırması</div>
 </div>
 
 <div id="tooltip"></div>
 
 <script>
-/* ═══ Tab switching ═══ */
+/* ─── Tab switching ─── */
 document.getElementById('tabs').addEventListener('click', e => {
   const b = e.target.closest('.tab'); if (!b) return;
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.method-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.mpanel').forEach(p => p.classList.remove('active'));
   b.classList.add('active');
-  document.getElementById('panel-' + b.dataset.target).classList.add('active');
+  document.getElementById('panel-' + b.dataset.t).classList.add('active');
 });
 
-/* ═══ Simulation ═══ */
-const simCfg = {
-  gcn:  {label:'Epoch',max:60,accFin:89.6,lossFin:0.182,metId:'gcn-m'},
-  gat:  {label:'Epoch',max:60,accFin:91.2,lossFin:0.154,metId:'gat-m'},
-  link: {label:'Epoch',max:60,accFin:84.1,lossFin:0.201,metId:'link-m'},
-  comm: {label:'İterasyon',max:30,accFin:74.0,lossFin:0.091,metId:'comm-m'},
-  kg:   {label:'Epoch',max:60,accFin:88.0,lossFin:0.133,metId:'kg-m'},
+/* ─── Simulation ─── */
+const SC = {
+  hgt:   {lbl:'Epoch', max:80, fin:93.1, loss:0.142, mid:'hgt-m'},
+  rgcn:  {lbl:'Epoch', max:80, fin:91.7, loss:0.168, mid:'rgcn-m'},
+  m2v:   {lbl:'Walk',  max:40, fin:84.7, loss:0.231, mid:'m2v-m'},
+  kge:   {lbl:'Epoch', max:80, fin:89.1, loss:0.118, mid:'kge-m'},
+  hsage: {lbl:'Epoch', max:80, fin:90.8, loss:0.177, mid:'hsage-m'},
 };
 function runSim(m) {
-  const c = simCfg[m];
+  const c = SC[m];
   const pw=document.getElementById('prog-'+m), pf=document.getElementById('pf-'+m),
         ep=document.getElementById('ep-'+m),   lg=document.getElementById('log-'+m),
-        mx=document.getElementById(c.metId);
+        mx=document.getElementById(c.mid);
   pw.style.display='block'; pf.style.width='0'; lg.innerHTML=''; mx.style.opacity='.4';
-  let i=0; const acc0=40+Math.random()*8, loss0=1.5+Math.random()*0.4;
+  let i=0, acc0=38+Math.random()*8, loss0=1.8+Math.random()*0.5;
   function tick(){
-    i++;
-    const pct=i/c.max;
-    const acc=acc0+(c.accFin-acc0)*(1-Math.exp(-5*pct));
-    const loss=loss0+(c.lossFin-loss0)*(1-Math.exp(-4*pct));
+    i++; const pct=i/c.max;
+    const acc=acc0+(c.fin-acc0)*(1-Math.exp(-5*pct));
+    const loss=loss0+(c.loss-loss0)*(1-Math.exp(-4*pct));
     pf.style.width=(pct*100)+'%';
-    ep.textContent=c.label+' '+i+'/'+c.max;
-    if(i%5===0||i===c.max){
+    ep.textContent=c.lbl+' '+i+'/'+c.max;
+    if(i%8===0||i===c.max){
       const ln=document.createElement('div');
-      ln.textContent=`[${c.label.toLowerCase().replace('İ','i')} ${String(i).padStart(2,' ')}] loss: ${loss.toFixed(4)}  metric: ${acc.toFixed(2)}%`;
+      ln.textContent=`[${c.lbl.toLowerCase()} ${String(i).padStart(2,' ')}] loss: ${loss.toFixed(4)}  metric: ${acc.toFixed(2)}%`;
       lg.appendChild(ln); lg.scrollTop=lg.scrollHeight;
     }
-    if(i<c.max){ setTimeout(tick,50+Math.random()*50); }
+    if(i<c.max){ setTimeout(tick,45+Math.random()*55);}
     else{
       mx.style.opacity='1';
-      const done=document.createElement('div');
-      done.style.color='#06D6A0';
-      done.textContent='✓ Tamamlandı';
-      lg.appendChild(done); lg.scrollTop=lg.scrollHeight;
+      const d=document.createElement('div'); d.style.color='#06D6A0';
+      d.textContent='✓ Tamamlandı'; lg.appendChild(d); lg.scrollTop=lg.scrollHeight;
     }
   }
   tick();
 }
 
-/* ═══ Graph Data ═══ */
-const DISHES = [
-  {id:'kesk', label:'Keşkek',   cat:1, info:'Et & Tahıl · döğme buğday, et, soğan · Sakarya düğün yemeği'},
-  {id:'pita', label:'Pita',     cat:0, info:'Hamur & Süt · un, su, tuz, maya · sac/tandır pişirme'},
-  {id:'ceng', label:'Çenger',   cat:0, info:'Hamur & Süt · mısır unu, peynir, tereyağı · Sakarya\'ya özgü'},
-  {id:'hosm', label:'Höşmerim', cat:0, info:'Hamur & Süt · çökelek, un, tereyağı · peynir tatlısı'},
-  {id:'tand', label:'Tandır',   cat:1, info:'Et & Tahıl · kuzu, soğan, domates · toprak fırın'},
-  {id:'tarh', label:'Tarhana',  cat:2, info:'Fermente · buğday, yoğurt, sebze · kışlık'},
-  {id:'lokm', label:'Lokma',    cat:3, info:'Tatlılar · un, maya, şurup · hayır lokması'},
-  {id:'gozl', label:'Gözleme',  cat:0, info:'Hamur & Süt · yufka, peynir, ıspanak'},
-  {id:'aşur', label:'Aşure',    cat:3, info:'Tatlılar · buğday, kuru meyve, nohut, şeker'},
-  {id:'duğç', label:'Düğün Çrb',cat:1, info:'Et & Tahıl · kemik suyu, yoğurt, un, tereyağı'},
-];
-const INGREDIENTS = [
-  {id:'bugd', label:'Buğday',    cat:'ing'}, {id:'un',   label:'Un',        cat:'ing'},
-  {id:'et',   label:'Et',        cat:'ing'}, {id:'peyni',label:'Peynir',    cat:'ing'},
-  {id:'yog',  label:'Yoğurt',    cat:'ing'}, {id:'misr', label:'Mısır unu', cat:'ing'},
-  {id:'tby',  label:'Tereyağı',  cat:'ing'}, {id:'sog',  label:'Soğan',     cat:'ing'},
-  {id:'şekr', label:'Şeker',     cat:'ing'}, {id:'noh',  label:'Nohut',     cat:'ing'},
-];
-const BI_EDGES = [
-  ['kesk','bugd'],['kesk','et'],['kesk','sog'],
-  ['pita','un'],['pita','tby'],
-  ['ceng','misr'],['ceng','peyni'],['ceng','tby'],
-  ['hosm','peyni'],['hosm','un'],['hosm','tby'],
-  ['tand','et'],['tand','sog'],
-  ['tarh','bugd'],['tarh','yog'],['tarh','sog'],
-  ['lokm','un'],['lokm','şekr'],
-  ['gozl','un'],['gozl','peyni'],['gozl','tby'],
-  ['aşur','bugd'],['aşur','şekr'],['aşur','noh'],
-  ['duğç','et'],['duğç','yog'],['duğç','un'],['duğç','tby'],
-];
-const PROJ_EDGES = [
-  ['kesk','tand',3],['kesk','duğç',2],['kesk','aşur',2],
-  ['pita','gozl',3],['pita','ceng',2],['pita','hosm',2],
-  ['ceng','hosm',2],['gozl','hosm',2],
-  ['tarh','aşur',1],['lokm','aşur',1],
-];
-const COMM_COLORS = ['var(--dish)','var(--ing)','var(--meth)','var(--gold)'];
+/* ─── Graph Visualization ─── */
+const canvas=document.getElementById('gc'), ctx=canvas.getContext('2d');
+const tooltip=document.getElementById('tooltip'), ndetail=document.getElementById('ndetail');
+let nodes=[], edges=[], dragging=null, dragOff={x:0,y:0}, currentView='full';
 
-let currentView = 'bipartite';
-let nodes = [], edges = [], dragging = null, dragOff = {x:0,y:0};
+const COLORS={R:'#FF9F43',I:'#00D4AA',C:'#FF6B6B',T:'#4C9FFF',P:'#A29BFE',N:'#FD79A8'};
+const W=()=>canvas.offsetWidth, H=()=>380;
+
+const NODE_DEFS = {
+  full: [
+    {id:'kesk',type:'R',lbl:'Keşkek',       info:'Recipe · Türkî · tandır pişirme · döğme buğday, et'},
+    {id:'pita',type:'R',lbl:'Pita',         info:'Recipe · Sakarya · sac pişirme · un, su, tuz'},
+    {id:'ceng',type:'R',lbl:'Çenger',       info:'Recipe · Sakarya özgün · mısır unu, peynir, tereyağı'},
+    {id:'hosm',type:'R',lbl:'Höşmerim',     info:'Recipe · Orta Asya kökenli · çökelek, un, tereyağı'},
+    {id:'bugd',type:'I',lbl:'Buğday',       info:'Ingredient · en yüksek derece merkezi · 14 tarifle bağlı'},
+    {id:'et',  type:'I',lbl:'Et (kuzu)',    info:'Ingredient · Türkî mutfak kimliği · 9 tarifle bağlı'},
+    {id:'pey', type:'I',lbl:'Peynir',       info:'Ingredient · Mihaliç · 6 tarifle bağlı'},
+    {id:'tby', type:'I',lbl:'Tereyağı',     info:'Ingredient · Sakarya yöresel · 11 tarifle bağlı'},
+    {id:'turki',type:'C',lbl:'Türkî',       info:'Cuisine/Culture · Orta Asya kökenli Türk mutfağı'},
+    {id:'osm', type:'C',lbl:'Osmanlı',      info:'Cuisine/Culture · imparatorluk mutfağı sentezi'},
+    {id:'tandir',type:'T',lbl:'Tandır',     info:'Technique · toprak fırın · yavaş pişirme'},
+    {id:'ferm',type:'T',lbl:'Fermentasyon', info:'Technique · tarhana, turşu, boza · kışlık saklama'},
+    {id:'sak', type:'P',lbl:'Sakarya',      info:'Place · Marmara-Karadeniz geçiş mutfağı'},
+    {id:'pyraz',type:'N',lbl:'Pyrazin',     info:'Flavor Compound · kavurma aroması · Maillard ürünü'},
+    {id:'lakton',type:'N',lbl:'Lakton',     info:'Flavor Compound · tereyağı aroması · süt ürünleri'},
+  ],
+  meta: [
+    {id:'kesk', type:'R',lbl:'Keşkek',   info:'Recipe'},
+    {id:'pita', type:'R',lbl:'Pita',     info:'Recipe'},
+    {id:'ceng', type:'R',lbl:'Çenger',   info:'Recipe'},
+    {id:'hosm', type:'R',lbl:'Höşmerim', info:'Recipe'},
+    {id:'sak',  type:'P',lbl:'Sakarya',  info:'Place'},
+    {id:'turki',type:'C',lbl:'Türkî',    info:'Culture'},
+    {id:'tandir',type:'T',lbl:'Tandır',  info:'Technique'},
+    {id:'ferm', type:'T',lbl:'Ferment.', info:'Technique'},
+    {id:'bugd', type:'I',lbl:'Buğday',   info:'Ingredient'},
+  ],
+  flavor: [
+    {id:'bugd', type:'I',lbl:'Buğday',    info:'Ingredient'},
+    {id:'et',   type:'I',lbl:'Et',        info:'Ingredient'},
+    {id:'pey',  type:'I',lbl:'Peynir',    info:'Ingredient'},
+    {id:'tby',  type:'I',lbl:'Tereyağı',  info:'Ingredient'},
+    {id:'pyraz',type:'N',lbl:'Pyrazin',   info:'Flavor Compound — kavurma/fırın aroması'},
+    {id:'lakton',type:'N',lbl:'Lakton',   info:'Flavor Compound — tereyağı/süt aroması'},
+    {id:'glut', type:'N',lbl:'Glutamat',  info:'Flavor Compound — et umami aroması'},
+    {id:'keton',type:'N',lbl:'Diacetyl',  info:'Flavor Compound — tereyağı karakteri'},
+    {id:'amid', type:'N',lbl:'Amid',      info:'Nutrient — buğday proteini'},
+  ],
+};
+
+const EDGE_DEFS = {
+  full: [
+    ['kesk','bugd','contains'],['kesk','et','contains'],['kesk','tandir','uses-technique'],
+    ['kesk','turki','culturally'],['kesk','sak','originates'],
+    ['pita','bugd','contains'],['pita','tby','contains'],['pita','sak','originates'],['pita','tandir','uses-technique'],
+    ['ceng','pey','contains'],['ceng','tby','contains'],['ceng','sak','originates'],
+    ['hosm','pey','contains'],['hosm','tby','contains'],['hosm','turki','culturally'],
+    ['turki','osm','culturally'],
+    ['bugd','pyraz','has-nutrient'],['tby','lakton','has-nutrient'],
+    ['pyraz','lakton','pairs-with'],
+  ],
+  meta: [
+    ['kesk','sak','originates'],['pita','sak','originates'],['ceng','sak','originates'],
+    ['kesk','turki','culture'],['hosm','turki','culture'],
+    ['kesk','tandir','technique'],['pita','tandir','technique'],
+    ['kesk','bugd','contains'],['pita','bugd','contains'],
+    ['hosm','ferm','technique'],
+  ],
+  flavor: [
+    ['bugd','amid','has-nutrient'],['bugd','pyraz','has-nutrient'],
+    ['et','glut','has-nutrient'],['et','pyraz','has-nutrient'],
+    ['pey','lakton','has-nutrient'],['pey','keton','has-nutrient'],
+    ['tby','lakton','has-nutrient'],['tby','keton','has-nutrient'],
+    ['pyraz','glut','pairs-with'],['lakton','keton','pairs-with'],['pyraz','lakton','pairs-with'],
+  ],
+};
 
 function setView(v) {
   currentView = v;
-  ['bipartite','proj','community'].forEach(id => {
-    document.getElementById('btn-'+id).classList.toggle('active', id===v);
-  });
+  ['full','meta','flavor'].forEach(id => document.getElementById('btn-'+id).classList.toggle('active',id===v));
   initGraph();
 }
 
-const canvas = document.getElementById('graphCanvas');
-const ctx = canvas.getContext('2d');
-const tooltip = document.getElementById('tooltip');
-const detailEl = document.getElementById('dish-detail');
-
-function W(){ return canvas.offsetWidth; }
-function H(){ return 360; }
-
 function initGraph() {
-  nodes = []; edges = [];
-  const w = W(), h = H();
-
-  if (currentView === 'bipartite') {
-    const dw = w*0.28, iw = w*0.72;
-    DISHES.forEach((d,i) => {
-      nodes.push({id:d.id, label:d.label, color:'var(--dish)', r:10, info:d.info,
-        x:dw, y:h*0.08 + i*(h*0.84/(DISHES.length-1))});
-    });
-    INGREDIENTS.forEach((g,i) => {
-      nodes.push({id:g.id, label:g.label, color:'var(--ing)', r:8, info:g.label+' (malzeme)',
-        x:iw, y:h*0.08 + i*(h*0.84/(INGREDIENTS.length-1))});
-    });
-    BI_EDGES.forEach(([a,b]) => edges.push({a,b,w:1,color:'#2A4055'}));
-
-  } else if (currentView === 'projection') {
-    const cx=w/2, cy=h/2, rad=Math.min(w,h)*0.36;
-    DISHES.forEach((d,i) => {
-      const ang = (i/DISHES.length)*Math.PI*2 - Math.PI/2;
-      nodes.push({id:d.id, label:d.label, color:'var(--dish)', r:11, info:d.info,
-        x:cx+rad*Math.cos(ang), y:cy+rad*Math.sin(ang)});
-    });
-    PROJ_EDGES.forEach(([a,b,w]) => edges.push({a,b,w,color:w>=3?'var(--dish)':'#2A4055'}));
-
-  } else { // community
-    const cx=w/2, cy=h/2, rad=Math.min(w,h)*0.34;
-    const commColor = ['var(--dish)','var(--ing)','var(--meth)','var(--gold)'];
-    const commOf = {kesk:1,tand:1,duğç:1, pita:0,ceng:0,hosm:0,gozl:0, tarh:2, lokm:3,aşur:3};
-    DISHES.forEach((d,i) => {
-      const ang = (i/DISHES.length)*Math.PI*2 - Math.PI/2;
-      const c = commOf[d.id] ?? 0;
-      nodes.push({id:d.id, label:d.label, color:commColor[c], r:11, info:d.info+' · Topluluk '+'ABCD'[c],
-        x:cx+rad*Math.cos(ang), y:cy+rad*Math.sin(ang)});
-    });
-    PROJ_EDGES.forEach(([a,b,w]) => {
-      const ca=commOf[a]??0, cb=commOf[b]??0;
-      edges.push({a,b,w,color: ca===cb ? commColor[ca] : '#1E2640'});
-    });
-  }
-
-  // jitter so identical positions spread
-  nodes.forEach(n => { n.vx=0; n.vy=0; });
+  nodes=[]; edges=[];
+  const w=W(), h=H(), defs=NODE_DEFS[currentView], edefs=EDGE_DEFS[currentView];
+  const cx=w/2, cy=h/2, r=Math.min(w,h)*0.35;
+  defs.forEach((d,i) => {
+    const ang=(i/defs.length)*Math.PI*2 - Math.PI/2;
+    const dist = d.type==='R' ? r*0.55 : (d.type==='I' ? r*0.85 : r*1.0);
+    nodes.push({...d, color:COLORS[d.type], radius: d.type==='R'?12:d.type==='N'?8:9,
+      x: cx+dist*Math.cos(ang), y: cy+dist*Math.sin(ang), vx:0, vy:0});
+  });
+  edefs.forEach(([a,b,rel]) => {
+    const na=nodeById(a), nb=nodeById(b); if(!na||!nb) return;
+    edges.push({a,b,rel,color: rel==='pairs-with'?COLORS.N : rel==='contains'?COLORS.I+'88' : '#2A3570'});
+  });
 }
 
 function nodeById(id){ return nodes.find(n=>n.id===id); }
 
-let animId = 0;
 function draw(){
-  const w=W(), h=H();
-  ctx.clearRect(0,0,w,h);
-
-  // edges
+  const w=W(), h=H(); ctx.clearRect(0,0,w,h);
   edges.forEach(e=>{
     const a=nodeById(e.a), b=nodeById(e.b); if(!a||!b) return;
     ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
-    ctx.strokeStyle=e.color; ctx.lineWidth=e.w>=3?2:1;
-    ctx.setLineDash([]); ctx.stroke();
+    ctx.strokeStyle=e.color; ctx.lineWidth=1.2; ctx.setLineDash([]);
+    ctx.stroke();
   });
-
-  // nodes
   nodes.forEach(n=>{
-    const col = n.color.startsWith('var(') ?
-      getComputedStyle(document.documentElement).getPropertyValue(n.color.slice(4,-1)).trim() : n.color;
-    ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
-    ctx.fillStyle=col; ctx.fill();
-    ctx.strokeStyle='#0F1320'; ctx.lineWidth=1.5; ctx.stroke();
-    // label
-    ctx.fillStyle='#9AA5C4'; ctx.font='10px sans-serif'; ctx.textAlign='center';
-    ctx.fillText(n.label, n.x, n.y+n.r+11);
+    ctx.beginPath(); ctx.arc(n.x,n.y,n.radius,0,Math.PI*2);
+    ctx.fillStyle=n.color; ctx.fill();
+    ctx.strokeStyle='#0F1320'; ctx.lineWidth=1.8; ctx.stroke();
+    ctx.fillStyle='#9AA5C4'; ctx.font='9.5px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(n.lbl, n.x, n.y+n.radius+11);
   });
-
-  animId = requestAnimationFrame(draw);
+  requestAnimationFrame(draw);
 }
 
-function getPos(e){
-  const r=canvas.getBoundingClientRect();
-  const t=e.touches?e.touches[0]:e;
-  return {x:(t.clientX-r.left), y:(t.clientY-r.top)};
-}
-function nodeAt(x,y){
-  for(let i=nodes.length-1;i>=0;i--){
-    const n=nodes[i], dx=n.x-x, dy=n.y-y;
-    if(dx*dx+dy*dy<=(n.r+6)*(n.r+6)) return n;
-  }
-  return null;
-}
+function getPos(e){ const r=canvas.getBoundingClientRect(),t=e.touches?e.touches[0]:e; return {x:t.clientX-r.left,y:t.clientY-r.top}; }
+function nodeAt(x,y){ for(let i=nodes.length-1;i>=0;i--){ const n=nodes[i],d=n.radius+6,dx=n.x-x,dy=n.y-y; if(dx*dx+dy*dy<=d*d) return n; } return null; }
 
-function showDetail(n){
-  if(!n){detailEl.innerHTML='<em style="color:var(--text3)">Bir düğüme tıklayarak detayları görün…</em>';return;}
-  detailEl.innerHTML=`<div class="dish-name">${n.label}</div><div>${n.info}</div>`;
-}
-
-canvas.addEventListener('mousedown', e=>{
-  const p=getPos(e), n=nodeAt(p.x,p.y);
-  if(n){dragging=n; dragOff={x:p.x-n.x,y:p.y-n.y};}
-});
-canvas.addEventListener('mousemove', e=>{
+canvas.addEventListener('mousedown',e=>{ const p=getPos(e),n=nodeAt(p.x,p.y); if(n){dragging=n;dragOff={x:p.x-n.x,y:p.y-n.y};} });
+canvas.addEventListener('mousemove',e=>{
   const p=getPos(e);
-  if(dragging){dragging.x=p.x-dragOff.x; dragging.y=p.y-dragOff.y; tooltip.classList.remove('show'); return;}
+  if(dragging){dragging.x=p.x-dragOff.x;dragging.y=p.y-dragOff.y;tooltip.classList.remove('show');return;}
   const n=nodeAt(p.x,p.y);
-  if(n){tooltip.textContent=n.info; tooltip.style.left=(e.clientX+12)+'px'; tooltip.style.top=(e.clientY-10)+'px'; tooltip.classList.add('show');}
+  if(n){tooltip.textContent='['+n.type+'] '+n.lbl;tooltip.style.left=(e.clientX+12)+'px';tooltip.style.top=(e.clientY-10)+'px';tooltip.classList.add('show');}
   else tooltip.classList.remove('show');
 });
 canvas.addEventListener('mouseup',()=>{dragging=null;});
-canvas.addEventListener('click', e=>{const p=getPos(e); showDetail(nodeAt(p.x,p.y));});
-canvas.addEventListener('mouseleave',()=>{dragging=null; tooltip.classList.remove('show');});
-
-canvas.addEventListener('touchstart',e=>{
-  const p=getPos(e),n=nodeAt(p.x,p.y);
-  if(n){dragging=n;dragOff={x:p.x-n.x,y:p.y-n.y};showDetail(n);e.preventDefault();}
-},{passive:false});
-canvas.addEventListener('touchmove',e=>{
-  if(!dragging)return;
-  const p=getPos(e);dragging.x=p.x-dragOff.x;dragging.y=p.y-dragOff.y;e.preventDefault();
-},{passive:false});
+canvas.addEventListener('click',e=>{ const p=getPos(e),n=nodeAt(p.x,p.y); if(n) ndetail.innerHTML='<strong style="color:var(--'+n.type+')">'+n.lbl+'</strong><br><span style="font-size:.78rem;color:var(--text3)">Tip: '+n.type+'</span><br>'+n.info; });
+canvas.addEventListener('mouseleave',()=>{dragging=null;tooltip.classList.remove('show');});
+canvas.addEventListener('touchstart',e=>{const p=getPos(e),n=nodeAt(p.x,p.y);if(n){dragging=n;dragOff={x:p.x-n.x,y:p.y-n.y};ndetail.innerHTML='<strong style="color:var(--'+n.type+')">'+n.lbl+'</strong><br>'+n.info;e.preventDefault();}},{passive:false});
+canvas.addEventListener('touchmove',e=>{if(!dragging)return;const p=getPos(e);dragging.x=p.x-dragOff.x;dragging.y=p.y-dragOff.y;e.preventDefault();},{passive:false});
 canvas.addEventListener('touchend',()=>{dragging=null;});
 
-function resize(){
-  canvas.width=canvas.offsetWidth*devicePixelRatio;
-  canvas.height=360*devicePixelRatio;
-  ctx.scale(devicePixelRatio,devicePixelRatio);
-  initGraph();
-}
+function resize(){ canvas.width=canvas.offsetWidth*devicePixelRatio; canvas.height=380*devicePixelRatio; ctx.scale(devicePixelRatio,devicePixelRatio); initGraph(); }
 window.addEventListener('resize',resize);
-cancelAnimationFrame(animId);
-resize();
-draw();
+resize(); draw();
 </script>
 </body>
 </html>
