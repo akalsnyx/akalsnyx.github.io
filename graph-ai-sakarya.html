@@ -126,6 +126,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
   <div class="header">
     <h1>🍽️ Sakarya Yemek Ağı</h1>
     <p>Çok katmanlı heterojen bilgi grafiği ile Türkî gastronomi analizi</p>
+    <p style="font-size:.75rem;color:var(--text3);margin-top:4px">Kaynak: <em>Topraktan Sofraya Sakarya Mutfağı</em> · 116 tarif · 16 topluluk · G<sub>ing</sub>(N=386, E=401) · NPMI eşiği ≥ 0.5</p>
   </div>
 
   <!-- 3.1 Önerilen Graf Yapısı -->
@@ -139,12 +140,12 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 
     <div class="sec-h">Düğüm Tipleri — V = V<sub>R</sub> ∪ V<sub>I</sub> ∪ V<sub>C</sub> ∪ V<sub>T</sub> ∪ V<sub>P</sub> ∪ V<sub>N</sub></div>
     <div class="ntype-row">
-      <div class="ntype"><div class="ndot" style="background:var(--R)"></div><strong>V<sub>R</sub></strong> Recipe<span class="nsub">Keşkek, Pita, Çenger…</span></div>
-      <div class="ntype"><div class="ndot" style="background:var(--I)"></div><strong>V<sub>I</sub></strong> Ingredient<span class="nsub">Buğday, Et, Peynir…</span></div>
-      <div class="ntype"><div class="ndot" style="background:var(--C)"></div><strong>V<sub>C</sub></strong> Cuisine/Culture<span class="nsub">Türkî, Osmanlı, Orta Asya…</span></div>
-      <div class="ntype"><div class="ndot" style="background:var(--T)"></div><strong>V<sub>T</sub></strong> Technique<span class="nsub">Tandır, Sac, Fermente…</span></div>
+      <div class="ntype"><div class="ndot" style="background:var(--R)"></div><strong>V<sub>R</sub></strong> Recipe<span class="nsub">Luku (SAK0033), Malahto, Dızmana… 116 tarif</span></div>
+      <div class="ntype"><div class="ndot" style="background:var(--I)"></div><strong>V<sub>I</sub></strong> Ingredient<span class="nsub">Sarımsak (×21), Kişniş, Kara Lahana… 292 malzeme</span></div>
+      <div class="ntype"><div class="ndot" style="background:var(--C)"></div><strong>V<sub>C</sub></strong> Cuisine/Culture<span class="nsub">Çerkes/Abhaz (14), Manav (21), Laz, Gürcü… 16 topluluk</span></div>
+      <div class="ntype"><div class="ndot" style="background:var(--T)"></div><strong>V<sub>T</sub></strong> Technique<span class="nsub">Haşlama (×44), Fırınlama (×27), Konserveleme…</span></div>
       <div class="ntype"><div class="ndot" style="background:var(--P)"></div><strong>V<sub>P</sub></strong> Place<span class="nsub">Sakarya, Düzce, Bolu…</span></div>
-      <div class="ntype"><div class="ndot" style="background:var(--N)"></div><strong>V<sub>N</sub></strong> Nutrient / Flavor<span class="nsub">Glikojen, Pyrazin, Lakton…</span></div>
+      <div class="ntype"><div class="ndot" style="background:var(--N)"></div><strong>V<sub>N</sub></strong> Nutrient / Flavor<span class="nsub">Linalool (kişniş), Carvacrol (kekik), Allicin…</span></div>
     </div>
 
     <div class="sec-h">Kenar Tipleri</div>
@@ -154,13 +155,13 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
       <table class="tbl">
         <thead><tr><th>Kenar</th><th>Kaynak</th><th>Hedef</th><th>Örnek</th></tr></thead>
         <tbody>
-          <tr><td><span class="badge b-R">contains</span></td><td>V<sub>R</sub></td><td>V<sub>I</sub></td><td>Keşkek → döğme buğday</td></tr>
-          <tr><td><span class="badge b-P">originates-in</span></td><td>V<sub>R</sub></td><td>V<sub>P</sub></td><td>Çenger → Sakarya</td></tr>
-          <tr><td><span class="badge b-T">uses-technique</span></td><td>V<sub>R</sub></td><td>V<sub>T</sub></td><td>Tandır kebabı → toprak fırın</td></tr>
-          <tr><td><span class="badge b-I">substitutes</span></td><td>V<sub>I</sub></td><td>V<sub>I</sub></td><td>Tereyağı ↔ kuyruk yağı</td></tr>
-          <tr><td><span class="badge b-N">pairs-with</span></td><td>V<sub>N</sub></td><td>V<sub>N</sub></td><td>Pyrazin ↔ Maillard bileşikleri</td></tr>
-          <tr><td><span class="badge b-N">has-nutrient</span></td><td>V<sub>I</sub></td><td>V<sub>N</sub></td><td>Buğday → Glutenin, Nişasta</td></tr>
-          <tr><td><span class="badge b-C">culturally-related</span></td><td>V<sub>C</sub></td><td>V<sub>C</sub></td><td>Türkî mutfak ↔ Orta Asya mutfağı</td></tr>
+          <tr><td><span class="badge b-R">contains</span></td><td>V<sub>R</sub></td><td>V<sub>I</sub></td><td>Yemeklik Acıka → kişniş, sarımsak</td></tr>
+          <tr><td><span class="badge b-P">originates-in</span></td><td>V<sub>R</sub></td><td>V<sub>P</sub></td><td>Luku → Sakarya</td></tr>
+          <tr><td><span class="badge b-T">uses-technique</span></td><td>V<sub>R</sub></td><td>V<sub>T</sub></td><td>Malahto → haşlama</td></tr>
+          <tr><td><span class="badge b-I">substitutes</span></td><td>V<sub>I</sub></td><td>V<sub>I</sub></td><td>İçyağı ↔ tereyağı (Laz tariflerinde)</td></tr>
+          <tr><td><span class="badge b-N">pairs-with</span></td><td>V<sub>N</sub></td><td>V<sub>N</sub></td><td>Linalool ↔ Carvacrol (NPMI=0.729)</td></tr>
+          <tr><td><span class="badge b-N">has-nutrient</span></td><td>V<sub>I</sub></td><td>V<sub>N</sub></td><td>Kişniş → Linalool · Sarımsak → Allicin</td></tr>
+          <tr><td><span class="badge b-C">culturally-related</span></td><td>V<sub>C</sub></td><td>V<sub>C</sub></td><td>Çerkes/Abhaz ↔ Laz (isCognateOf)</td></tr>
         </tbody>
       </table>
     </div>
@@ -215,9 +216,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
         <div class="step" style="background:#FF9F4315"><span class="step-num" style="color:var(--R)">Çıktı</span>Görev</div>
       </div>
       <p style="color:var(--text2);font-size:.83rem;margin:8px 0">
-        <strong style="color:var(--text)">Sakarya uygulaması:</strong> Recipe düğümlerini
-        (Türkî / Osmanlı / Orta Asya kökenli) sınıflandırır. Her kenar tipine özel
-        dikkat ağırlığı kültürel ilişkiyi öğrenir.
+        <strong style="color:var(--text)">Sakarya uygulaması:</strong> 116 tarifi
+        (Çerkes/Abhaz · Manav · Laz · Gürcü · Bulgaristan Muhaciri…) topluluk etiketiyle sınıflandırır.
+        contains, hasCulturalOrigin, hasPrepTechnique kenar tiplerine özel dikkat başlıkları kültürel kimliği öğrenir.
       </p>
       <div class="mrow" id="hgt-m" style="opacity:.4">
         <div class="metric"><div class="mval" style="color:var(--green)">93.1%</div><div class="mlbl">Accuracy</div></div>
@@ -250,8 +251,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
       </div>
       <p style="color:var(--text2);font-size:.83rem;margin:8px 0">
         <strong style="color:var(--text)">Sakarya uygulaması:</strong>
-        "Keşkek — contains → buğday" ve "Keşkek — originates-in → Sakarya" ilişkilerini
-        ayrı matrislerle öğrenerek eksik linkleri tamamlar (eksik malzeme tahmini).
+        "Yemeklik Acıka — hasIngredient → kişniş" ve "Luku — hasCulturalOrigin → Laz" gibi
+        2,704 RDF tripleini ayrı W<sup>(r)</sup> matriceleriyle öğrenerek eksik malzeme/teknik linklerini tamamlar (G<sub>ing</sub>: N=386, E=401).
       </p>
       <div class="mrow" id="rgcn-m" style="opacity:.4">
         <div class="metric"><div class="mval" style="color:var(--green)">91.7%</div><div class="mlbl">Accuracy</div></div>
@@ -285,7 +286,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
           <span class="mpa">—contains⁻¹→</span>
           <span class="mpc" style="background:#FF9F4315;color:var(--R)">Recipe</span>
         </div>
-        <div style="font-size:.78rem;color:var(--text2)">Aynı malzemeyi paylaşan tarifler benzer embedding'e sahip olur.</div>
+        <div style="font-size:.78rem;color:var(--text2)">Örnek: Yemeklik Acıka ← kişniş → başka Çerkes tarifler. Aynı malzemeyi paylaşan tarifler benzer embedding'e sahip olur.</div>
       </div>
 
       <div class="mpath-box">
@@ -297,7 +298,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
           <span class="mpa">—originates-in⁻¹→</span>
           <span class="mpc" style="background:#FF9F4315;color:var(--R)">Recipe</span>
         </div>
-        <div style="font-size:.78rem;color:var(--text2)">Aynı bölgeden çıkan tarifleri kültürel kümelere ayırır.</div>
+        <div style="font-size:.78rem;color:var(--text2)">Örnek: Luku ← Sakarya → Malahto → Dızmana. G_rec grafiğinde N=144, E=344. Aynı bölgeden gelen tarifler kümelenir.</div>
       </div>
 
       <div class="mpath-box">
@@ -309,7 +310,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
           <span class="mpa">—uses-technique⁻¹→</span>
           <span class="mpc" style="background:#FF9F4315;color:var(--R)">Recipe</span>
         </div>
-        <div style="font-size:.78rem;color:var(--text2)">Aynı pişirme yöntemini kullanan tarifleri gruplar (tandır ailesi, fermente ailesi…)</div>
+        <div style="font-size:.78rem;color:var(--text2)">Örnek: Acıka ← haşlama → Luku → Malahto. Haşlama (×44) Laz-Gürcü-Çerkes mutfağını birleştirir.</div>
       </div>
 
       <div class="mpath-box">
@@ -321,7 +322,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
           <span class="mpa">⟵Recipe⟶</span>
           <span class="mpc" style="background:#FF9F4315;color:var(--R)">Recipe</span>
         </div>
-        <div style="font-size:.78rem;color:var(--text2)">Türkî → Osmanlı → Türk mutfağı kültürel süreklilik zinciri.</div>
+        <div style="font-size:.78rem;color:var(--text2)">Örnek: Çerkes/Abhaz ←isCognateOf→ Laz ⟶ Luku, Malahto. Sakarya'da 16 topluluk ortak ingredient alanı paylaşır.</div>
       </div>
 
       <div class="mrow" id="m2v-m" style="opacity:.4">
@@ -356,8 +357,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
       </div>
       <p style="color:var(--text2);font-size:.83rem;margin:8px 0">
         <strong style="color:var(--text)">Sakarya uygulaması:</strong>
-        "Çenger — originates-in — ?" sorusunu yanıtlar. Flavor compound eşleştirmede
-        (pairs-with ilişkisi) RotatE simetrik ve asimetrik örüntüleri yakalar.
+        "Luku — hasCulturalOrigin — ?" sorusunu yanıtlar. Linalool ↔ Carvacrol (NPMI=0.729)
+        gibi flavor compound pairs-with ilişkilerinde RotatE simetrik örüntüleri yakalar.
       </p>
       <div class="mrow" id="kge-m" style="opacity:.4">
         <div class="metric"><div class="mval" style="color:var(--green)">0.891</div><div class="mlbl">MRR</div></div>
@@ -393,8 +394,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
       </div>
       <p style="color:var(--text2);font-size:.83rem;margin:8px 0">
         <strong style="color:var(--text)">Sakarya uygulaması:</strong>
-        Yeni keşfedilen bir tarifte yalnızca malzeme ve bölge bilgisi varken
-        modelin kültürel sınıfını anlık tahmin etmesi için idealdir.
+        "Topraktan Sofraya"da kapsamı dışında kalan tarifleri (yeni Manav veya Gürcü tarifi)
+        yeniden eğitmeden embedding'e alıp 16 topluluk arasında anlık sınıflandırır.
       </p>
       <div class="mrow" id="hsage-m" style="opacity:.4">
         <div class="metric"><div class="mval" style="color:var(--green)">90.8%</div><div class="mlbl">Accuracy</div></div>
@@ -443,7 +444,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
     </div>
   </div>
 
-  <div class="footer-note">Sakarya Geleneksel Mutfak · Çok Katmanlı Heterojen Bilgi Grafiği · Graph AI Araştırması</div>
+  <div class="footer-note">Sakarya Geleneksel Mutfak · <em>Topraktan Sofraya Sakarya Mutfağı</em> · 116 tarif, 16 topluluk, 292 malzeme · Heterojen Bilgi Grafiği (HGT · R-GCN · metapath2vec · ComplEx/RotatE)</div>
 </div>
 
 <div id="tooltip"></div>
@@ -504,70 +505,82 @@ const W=()=>canvas.offsetWidth, H=()=>380;
 
 const NODE_DEFS = {
   full: [
-    {id:'kesk',type:'R',lbl:'Keşkek',       info:'Recipe · Türkî · tandır pişirme · döğme buğday, et'},
-    {id:'pita',type:'R',lbl:'Pita',         info:'Recipe · Sakarya · sac pişirme · un, su, tuz'},
-    {id:'ceng',type:'R',lbl:'Çenger',       info:'Recipe · Sakarya özgün · mısır unu, peynir, tereyağı'},
-    {id:'hosm',type:'R',lbl:'Höşmerim',     info:'Recipe · Orta Asya kökenli · çökelek, un, tereyağı'},
-    {id:'bugd',type:'I',lbl:'Buğday',       info:'Ingredient · en yüksek derece merkezi · 14 tarifle bağlı'},
-    {id:'et',  type:'I',lbl:'Et (kuzu)',    info:'Ingredient · Türkî mutfak kimliği · 9 tarifle bağlı'},
-    {id:'pey', type:'I',lbl:'Peynir',       info:'Ingredient · Mihaliç · 6 tarifle bağlı'},
-    {id:'tby', type:'I',lbl:'Tereyağı',     info:'Ingredient · Sakarya yöresel · 11 tarifle bağlı'},
-    {id:'turki',type:'C',lbl:'Türkî',       info:'Cuisine/Culture · Orta Asya kökenli Türk mutfağı'},
-    {id:'osm', type:'C',lbl:'Osmanlı',      info:'Cuisine/Culture · imparatorluk mutfağı sentezi'},
-    {id:'tandir',type:'T',lbl:'Tandır',     info:'Technique · toprak fırın · yavaş pişirme'},
-    {id:'ferm',type:'T',lbl:'Fermentasyon', info:'Technique · tarhana, turşu, boza · kışlık saklama'},
-    {id:'sak', type:'P',lbl:'Sakarya',      info:'Place · Marmara-Karadeniz geçiş mutfağı'},
-    {id:'pyraz',type:'N',lbl:'Pyrazin',     info:'Flavor Compound · kavurma aroması · Maillard ürünü'},
-    {id:'lakton',type:'N',lbl:'Lakton',     info:'Flavor Compound · tereyağı aroması · süt ürünleri'},
+    {id:'acika',  type:'R', lbl:'Yemeklik Acıka',    info:'SAK0002 · Çerkes/Abhaz · haşlama · abhaz biberi, kişniş, sarımsak'},
+    {id:'luku',   type:'R', lbl:'Luku',              info:'SAK0033 · Laz · haşlama · kara lahana, barbunya, içyağı'},
+    {id:'malahto',type:'R', lbl:'Malahto',           info:'SAK0040 · Gürcü · haşlama · mısır unu, kapya biber'},
+    {id:'dizmana',type:'R', lbl:'Dızmana',           info:'SAK0070 · Bulgaristan Muhaciri · fırınlama · un, yoğurt, kaymak'},
+    {id:'kavurga',type:'R', lbl:'Buğday Kavurga',    info:'SAK0005 · Manav · kışlık hazırlık · aşurelik buğday, tuz'},
+    {id:'sarims', type:'I', lbl:'Sarımsak',          info:'Ingredient · 21 tarifle bağlı · Çerkes/Abhaz mutfağının imza malzemesi'},
+    {id:'kislah', type:'I', lbl:'Kara Lahana',       info:'Ingredient · Laz/Karadeniz mutfağının temel malzemesi · Luku, Karışık'},
+    {id:'misrun', type:'I', lbl:'Mısır Unu',         info:'Ingredient · 15 tarifle bağlı · Gürcü ve Laz mutfağında belirgin'},
+    {id:'yogurt', type:'I', lbl:'Yoğurt',            info:'Ingredient · 17 tarifle bağlı · Dızmana, Manav hamur işleri'},
+    {id:'kisnıs', type:'I', lbl:'Kişniş',            info:'Ingredient · Çerkes/Abhaz ikonografisi · linalool aroması · sarımsak ile NPMI'},
+    {id:'cerkes', type:'C', lbl:'Çerkes/Abhaz',      info:'Cuisine · 14 tarif · abhaz biberi, kişniş, sarımsak imzası'},
+    {id:'laz',    type:'C', lbl:'Laz/Karadeniz',     info:'Cuisine · 9 tarif · kara lahana, mısır unu, içyağı'},
+    {id:'bulgar', type:'C', lbl:'Bulg. Muhaciri',    info:'Cuisine · 5 tarif · Dızmana, Katmer, fırın hamur işleri'},
+    {id:'hasla',  type:'T', lbl:'Haşlama',           info:'Technique · 44 tarifle en yaygın · Laz, Gürcü, Çerkes mutfağı'},
+    {id:'firin',  type:'T', lbl:'Fırınlama',         info:'Technique · 27 tarif · Bulgaristan Muhaciri, Manav'},
+    {id:'sak',    type:'P', lbl:'Sakarya',           info:'Place · Marmara-Karadeniz geçiş mutfağı · 16 topluluk, 116 tarif'},
+    {id:'linalol',type:'N', lbl:'Linalool',          info:'Flavor Compound · kişniş/reyhan aroması · NPMI: kişniş↔taze soğan=0.592'},
+    {id:'karvak', type:'N', lbl:'Carvacrol',         info:'Flavor Compound · kekik-kimyon ailesi · NPMI: kekik↔kimyon=0.729'},
   ],
   meta: [
-    {id:'kesk', type:'R',lbl:'Keşkek',   info:'Recipe'},
-    {id:'pita', type:'R',lbl:'Pita',     info:'Recipe'},
-    {id:'ceng', type:'R',lbl:'Çenger',   info:'Recipe'},
-    {id:'hosm', type:'R',lbl:'Höşmerim', info:'Recipe'},
-    {id:'sak',  type:'P',lbl:'Sakarya',  info:'Place'},
-    {id:'turki',type:'C',lbl:'Türkî',    info:'Culture'},
-    {id:'tandir',type:'T',lbl:'Tandır',  info:'Technique'},
-    {id:'ferm', type:'T',lbl:'Ferment.', info:'Technique'},
-    {id:'bugd', type:'I',lbl:'Buğday',   info:'Ingredient'},
+    {id:'acika',  type:'R', lbl:'Yemeklik Acıka', info:'SAK0002 · Çerkes/Abhaz'},
+    {id:'luku',   type:'R', lbl:'Luku',           info:'SAK0033 · Laz'},
+    {id:'malahto',type:'R', lbl:'Malahto',        info:'SAK0040 · Gürcü · mısır unu'},
+    {id:'dizmana',type:'R', lbl:'Dızmana',        info:'SAK0070 · Bulgaristan Muhaciri'},
+    {id:'cerkes', type:'C', lbl:'Çerkes/Abhaz',   info:'Cuisine · 14 tarif'},
+    {id:'laz',    type:'C', lbl:'Laz/Karadeniz',  info:'Cuisine · 9 tarif'},
+    {id:'bulgar', type:'C', lbl:'Bulg. Muhaciri', info:'Cuisine · 5 tarif'},
+    {id:'hasla',  type:'T', lbl:'Haşlama',        info:'Technique · 44 tarif'},
+    {id:'kisnıs', type:'I', lbl:'Kişniş',         info:'Ingredient · Çerkes imza malzeme'},
+    {id:'misrun', type:'I', lbl:'Mısır Unu',      info:'Ingredient · Gürcü/Laz mutfağı'},
   ],
   flavor: [
-    {id:'bugd', type:'I',lbl:'Buğday',    info:'Ingredient'},
-    {id:'et',   type:'I',lbl:'Et',        info:'Ingredient'},
-    {id:'pey',  type:'I',lbl:'Peynir',    info:'Ingredient'},
-    {id:'tby',  type:'I',lbl:'Tereyağı',  info:'Ingredient'},
-    {id:'pyraz',type:'N',lbl:'Pyrazin',   info:'Flavor Compound — kavurma/fırın aroması'},
-    {id:'lakton',type:'N',lbl:'Lakton',   info:'Flavor Compound — tereyağı/süt aroması'},
-    {id:'glut', type:'N',lbl:'Glutamat',  info:'Flavor Compound — et umami aroması'},
-    {id:'keton',type:'N',lbl:'Diacetyl',  info:'Flavor Compound — tereyağı karakteri'},
-    {id:'amid', type:'N',lbl:'Amid',      info:'Nutrient — buğday proteini'},
+    {id:'kekik',  type:'I', lbl:'Kekik',    info:'Ingredient · NPMI: kekik↔kimyon=0.729, kekik↔kişniş=0.604'},
+    {id:'kimyon', type:'I', lbl:'Kimyon',   info:'Ingredient · NPMI: kekik↔kimyon=0.729 · cumin'},
+    {id:'kisnıs', type:'I', lbl:'Kişniş',  info:'Ingredient · NPMI: kişniş↔taze soğan=0.592 · coriander'},
+    {id:'sarims', type:'I', lbl:'Sarımsak', info:'Ingredient · 21 tarifle bağlı · allicin aroması'},
+    {id:'linalol',type:'N', lbl:'Linalool', info:'Flavor Compound · kişniş+reyhan → ortaklaşa biyosentez'},
+    {id:'karvak', type:'N', lbl:'Carvacrol',info:'Flavor Compound · kekik+kimyon → terpenoid ailesi'},
+    {id:'allicin',type:'N', lbl:'Allicin',  info:'Flavor Compound · sarımsak imza bileşiği · organosülfür'},
+    {id:'terpene',type:'N', lbl:'γ-Terpinen',info:'Flavor Compound · kekik içindeki → karvakrol öncüsü'},
+    {id:'carvone',type:'N', lbl:'Carvone',  info:'Flavor Compound · kimyon · NPMI köprüsü kekik ile güçlü'},
   ],
 };
 
 const EDGE_DEFS = {
   full: [
-    ['kesk','bugd','contains'],['kesk','et','contains'],['kesk','tandir','uses-technique'],
-    ['kesk','turki','culturally'],['kesk','sak','originates'],
-    ['pita','bugd','contains'],['pita','tby','contains'],['pita','sak','originates'],['pita','tandir','uses-technique'],
-    ['ceng','pey','contains'],['ceng','tby','contains'],['ceng','sak','originates'],
-    ['hosm','pey','contains'],['hosm','tby','contains'],['hosm','turki','culturally'],
-    ['turki','osm','culturally'],
-    ['bugd','pyraz','has-nutrient'],['tby','lakton','has-nutrient'],
-    ['pyraz','lakton','pairs-with'],
+    ['acika','sarims','contains'],['acika','kisnıs','contains'],
+    ['acika','hasla','uses-technique'],['acika','cerkes','culturally-related'],['acika','sak','originates-in'],
+    ['luku','kislah','contains'],['luku','hasla','uses-technique'],
+    ['luku','laz','culturally-related'],['luku','sak','originates-in'],
+    ['malahto','misrun','contains'],['malahto','hasla','uses-technique'],['malahto','sak','originates-in'],
+    ['dizmana','yogurt','contains'],['dizmana','firin','uses-technique'],
+    ['dizmana','bulgar','culturally-related'],['dizmana','sak','originates-in'],
+    ['kavurga','sak','originates-in'],
+    ['cerkes','laz','culturally-related'],
+    ['kisnıs','linalol','has-nutrient'],['yogurt','karvak','has-nutrient'],
+    ['linalol','karvak','pairs-with'],
   ],
   meta: [
-    ['kesk','sak','originates'],['pita','sak','originates'],['ceng','sak','originates'],
-    ['kesk','turki','culture'],['hosm','turki','culture'],
-    ['kesk','tandir','technique'],['pita','tandir','technique'],
-    ['kesk','bugd','contains'],['pita','bugd','contains'],
-    ['hosm','ferm','technique'],
+    ['acika','cerkes','hasCulturalOrigin'],
+    ['luku','laz','hasCulturalOrigin'],
+    ['dizmana','bulgar','hasCulturalOrigin'],
+    ['acika','hasla','hasPrepTechnique'],
+    ['luku','hasla','hasPrepTechnique'],
+    ['malahto','hasla','hasPrepTechnique'],
+    ['acika','kisnıs','hasIngredient'],
+    ['malahto','misrun','hasIngredient'],
+    ['cerkes','laz','isCognateOf'],
   ],
   flavor: [
-    ['bugd','amid','has-nutrient'],['bugd','pyraz','has-nutrient'],
-    ['et','glut','has-nutrient'],['et','pyraz','has-nutrient'],
-    ['pey','lakton','has-nutrient'],['pey','keton','has-nutrient'],
-    ['tby','lakton','has-nutrient'],['tby','keton','has-nutrient'],
-    ['pyraz','glut','pairs-with'],['lakton','keton','pairs-with'],['pyraz','lakton','pairs-with'],
+    ['kekik','karvak','has-nutrient'],['kekik','terpene','has-nutrient'],
+    ['kimyon','karvak','has-nutrient'],['kimyon','carvone','has-nutrient'],
+    ['kisnıs','linalol','has-nutrient'],
+    ['sarims','allicin','has-nutrient'],
+    ['kekik','kimyon','pairs-with'],['kekik','kisnıs','pairs-with'],
+    ['linalol','karvak','pairs-with'],['terpene','carvone','pairs-with'],
   ],
 };
 
