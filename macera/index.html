@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Haftalık Macera Programı</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Macera">
+<meta name="theme-color" content="#fffaf0">
+<link rel="apple-touch-icon" href="img/hero.jpg">
+<link rel="icon" href="img/hero.jpg">
+<link rel="manifest" href="manifest.json">
+<style>
+  :root{
+    --ink:#1f2433; --muted:#6b6f7b; --paper:#fffaf0; --line:#e6dfcf; --accent:#d2652a;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Rounded","Nunito","Segoe UI",Roboto,sans-serif}
+  body{padding:env(safe-area-inset-top) env(safe-area-inset-right) calc(env(safe-area-inset-bottom) + 16px) env(safe-area-inset-left)}
+  .wrap{max-width:760px;margin:0 auto;padding:12px 14px 24px}
+
+  header{display:flex;align-items:center;gap:12px;margin:4px 0 10px}
+  header img{width:64px;height:64px;border-radius:16px;object-fit:cover;background:#fff;border:2px solid var(--line)}
+  header .kicker{font-size:11px;letter-spacing:.14em;font-weight:800;color:var(--accent)}
+  header h1{margin:2px 0 0;font-size:24px;font-weight:900;line-height:1.1}
+
+  .meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+  .meta label{display:flex;flex-direction:column;font-size:11px;font-weight:700;color:var(--muted);
+    background:#fff;border:2px solid var(--line);border-radius:14px;padding:6px 10px}
+  .meta label{min-width:0}
+  .meta input{width:100%;min-width:0;border:0;outline:0;font:inherit;font-size:16px;font-weight:700;color:var(--ink);background:transparent;padding:2px 0}
+
+  .score{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--ink);
+    border-radius:18px;padding:10px 14px;margin-bottom:12px}
+  .score .num{font-size:28px;font-weight:900;white-space:nowrap}
+  .score .num small{font-size:16px;color:var(--muted)}
+  .bar{flex:1;height:14px;border-radius:99px;background:#efe8d8;overflow:hidden}
+  .bar i{display:block;height:100%;width:0;border-radius:99px;
+    background:linear-gradient(90deg,#2e8a55,#f0b429);transition:width .35s}
+
+  .tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:1 0 auto;min-width:46px;border:0;border-radius:12px;padding:9px 10px;font:inherit;font-weight:800;
+    font-size:14px;background:#2a2f3d;color:#fff;opacity:.45}
+  .tab.on{opacity:1;background:var(--ink);box-shadow:0 3px 0 #000}
+  .tab.today{outline:3px solid #f0b429;outline-offset:1px}
+  .tab .d{display:block;font-size:10px;font-weight:700;opacity:.8}
+
+  .ders{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:2px 0 12px;font-size:13px;font-weight:700;color:var(--muted)}
+  .chip{padding:5px 10px;border-radius:99px;font-weight:800;font-size:13px}
+  .chip.satranc{background:#ebe5fb;color:#5a3fc0;border:2px solid #6d4fd1}
+  .chip.piyano{background:#e2f3e8;color:#23704a;border:2px solid #2e8a55}
+  .chip.basket{background:#fde6d6;color:#b4521f;border:2px solid #d2652a}
+
+  .list{display:flex;flex-direction:column;gap:10px}
+  .task{display:flex;align-items:center;gap:12px;border-radius:18px;padding:10px;border:2px solid;background:var(--bg);border-color:var(--bd)}
+  .task .ic{width:52px;height:52px;border-radius:12px;object-fit:cover;flex:none;border:2px solid var(--bd)}
+  .task .tx{flex:1;min-width:0}
+  .task .nm{font-weight:900;font-size:17px}
+  .task .nm em{font-style:normal;font-size:12px;color:var(--bd);font-weight:800;margin-left:4px}
+  .task .sb{font-size:12px;color:var(--muted);margin-top:2px}
+  .task .sb b{color:var(--bd)}
+  .links{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .links a{font-size:12px;font-weight:800;text-decoration:none;color:#fff;background:var(--bd);
+    padding:5px 10px;border-radius:99px}
+  .task.off{opacity:.55}
+
+  .ring{width:62px;height:62px;border-radius:50%;border:4px solid var(--bd);background:#fff;flex:none;
+    padding:0;position:relative;overflow:hidden;cursor:pointer}
+  .ring.dash{border-style:dashed}
+  .ring img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(0);transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+  .ring.done img{transform:scale(1)}
+  .ring.done{box-shadow:0 0 0 3px #fff,0 0 0 6px #f0b429}
+  .ring:disabled{opacity:.35;cursor:default}
+
+  .grid{overflow-x:auto;background:#fff;border:2px solid var(--line);border-radius:18px;padding:8px}
+  .grid table{border-collapse:separate;border-spacing:4px;width:100%;min-width:520px}
+  .grid th{font-size:11px;font-weight:800;color:#fff;background:var(--ink);border-radius:8px;padding:6px 2px}
+  .grid th.rowh{background:none;color:var(--muted);text-align:left}
+  .grid td{text-align:center;border-radius:10px;height:46px;background:var(--bg)}
+  .grid td.empty{background:none;border:2px dashed var(--line)}
+  .grid td.lbl{background:none;text-align:left;padding-left:2px;white-space:nowrap}
+  .grid td.lbl img{width:30px;height:30px;border-radius:8px;object-fit:cover;vertical-align:middle;border:2px solid var(--bd)}
+  .grid td.lbl span{font-size:12px;font-weight:800;vertical-align:middle;margin-left:4px}
+  @media (max-width:520px){.grid td.lbl span{display:none}.grid table{min-width:0}.grid th{font-size:10px}}
+  .grid .ring{width:36px;height:36px;border-width:3px}
+  .grid .ring.done{box-shadow:0 0 0 2px #fff,0 0 0 4px #f0b429}
+
+  .switch{display:flex;background:#efe8d8;border-radius:14px;padding:4px;margin-bottom:12px}
+  .switch button{flex:1;border:0;background:none;font:inherit;font-weight:800;font-size:14px;padding:9px;border-radius:10px;color:var(--muted)}
+  .switch button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+
+  .foot{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+  .treasure{background:#fdf1cf;border:2px solid #e2b33c;border-radius:16px;padding:8px 12px;font-size:12px;font-weight:800;color:#8a6410}
+  .treasure input{display:block;width:100%;border:0;outline:0;background:transparent;font:inherit;font-size:16px;color:var(--ink);padding:4px 0}
+  .tip{font-size:13px;color:var(--muted);text-align:center}
+  .reset{border:2px solid var(--ink);background:#fff;border-radius:14px;padding:11px;font:inherit;font-weight:800;font-size:14px}
+
+  .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 24px);transform:translate(-50%,140%);
+    background:var(--ink);color:#fff;padding:12px 18px;border-radius:16px;font-weight:800;transition:transform .3s;z-index:9;
+    text-align:center;max-width:90vw}
+  .toast.show{transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="img/hero.jpg" alt="">
+    <div>
+      <div class="kicker">KAHRAMANIN GÖREV HARİTASI</div>
+      <h1>Haftalık Macera Programı</h1>
+    </div>
+  </header>
+
+  <div class="meta">
+    <label>Kahraman<input id="hero" placeholder="Adın" autocomplete="off"></label>
+    <label>Hafta<input id="week" placeholder="ör. 9–15 Kasım" autocomplete="off"></label>
+  </div>
+
+  <div class="score">
+    <div class="num"><span id="total">0</span><small> / 39</small></div>
+    <div class="bar"><i id="bar"></i></div>
+  </div>
+
+  <div class="switch">
+    <button id="vDay" class="on">Günlük</button>
+    <button id="vWeek">Haftalık</button>
+  </div>
+
+  <div id="dayView">
+    <div class="tabs" id="tabs"></div>
+    <div class="ders" id="ders"></div>
+    <div class="list" id="list"></div>
+  </div>
+
+  <div id="weekView" hidden>
+    <div class="grid"><table id="grid"></table></div>
+  </div>
+
+  <div class="foot">
+    <div class="tip">⭐ Görevi bitirince halkaya dokun, Link gelsin! Yanlışlıkla dokunduysan tekrar dokun.</div>
+    <label class="treasure">Haftanın hazinesi<input id="treasure" placeholder="Bu haftanın ödülü…" autocomplete="off"></label>
+    <button class="reset" id="reset">🔄 Yeni hafta başlat</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const DAYS  = ["Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi","Pazar"];
+const SHORT = ["Pzt","Sal","Çar","Per","Cum","Cmt","Paz"];
+const ALL = [0,1,2,3,4,5,6];
+
+// Ders günleri (PDF'teki ilk satır)
+const DERS = {
+  0:[["Satranç dersi","satranc"]],
+  1:[["Okulda satranç","satranc"]],
+  2:[["Satranç dersi","satranc"]],
+  3:[],
+  4:[["Piyano dersi","piyano"],["Basketbol","basket"]],
+  5:[["Basketbol","basket"]],
+  6:[["Basketbol","basket"]]
+};
+
+// Görevler. flex:true => haftada 1 kez, istenen gün yapılabilir (DIY).
+const TASKS = [
+  {id:"okul",      name:"Okul ödevi",      min:"",      who:"Gezgin Link",   note:"Her gün",          days:ALL,     bg:"#fdf1cf", bd:"#b07a1a"},
+  {id:"satranc",   name:"Satranç",         min:"20 dk", who:"Okçu Link",     note:"Chessable + Lichess", days:ALL,  bg:"#ebe5fb", bd:"#6d4fd1",
+     links:[["Chessable","https://www.chessable.com/"],["Lichess","https://lichess.org/"]]},
+  {id:"piyano",    name:"Piyano",          min:"20 dk", who:"Okarinacı Link",note:"Her gün",          days:ALL,     bg:"#e2f3e8", bd:"#2e8a55"},
+  {id:"turkce",    name:"Türkçe okuma",    min:"30 dk", who:"Korok Kulübü",  note:"Her gün",          days:ALL,     bg:"#dcf1f0", bd:"#1f8a85"},
+  {id:"ingilizce", name:"İngilizce okuma", min:"20 dk", who:"Neşeli Link",   note:"Haftada 3",        days:[0,2,4], bg:"#fde6d6", bd:"#d2652a"},
+  {id:"extra",     name:"Extra Work",      min:"",      who:"Maskeli Link",  note:"Haftada 2",        days:[1,3],   bg:"#fbe0e0", bd:"#b8303a"},
+  {id:"myon",      name:"myON",            min:"20 dk", who:"Minik Korok",   note:"Haftada 3",        days:[2,5,6], bg:"#fbe1ec", bd:"#c2346f",
+     links:[["myON","https://www.myon.com/"]]},
+  {id:"brainpop",  name:"BrainPOP Jr",     min:"",      who:"Minik Link",    note:"Haftada 1",        days:[4],     bg:"#ddebf9", bd:"#2f74b5",
+     links:[["BrainPOP Jr","https://jr.brainpop.com/"]]},
+  {id:"code",      name:"Code Monkey",     min:"20 dk", who:"Yapıcı Link",   note:"Haftada 1",        days:[5],     bg:"#e3e8fb", bd:"#3b5bd6",
+     links:[["CodeMonkey","https://app.codemonkey.com/"]]},
+  {id:"diy",       name:"DIY",             min:"",      who:"Usta Link",     note:"annemle, haftada 1", days:ALL,   bg:"#dff2ec", bd:"#1f7a5c", flex:true}
+];
+const GOAL = 39;
+
+const KEY = "macera-v1";
+let S = load();
+function load(){
+  try{ return Object.assign({done:{},hero:"",week:"",treasure:""}, JSON.parse(localStorage.getItem(KEY)||"{}")); }
+  catch(e){ return {done:{},hero:"",week:"",treasure:""}; }
+}
+function save(){ localStorage.setItem(KEY, JSON.stringify(S)); }
+
+const todayIdx = (new Date().getDay()+6)%7;
+let cur = todayIdx;
+
+const $ = id => document.getElementById(id);
+["hero","week","treasure"].forEach(k=>{
+  $(k).value = S[k]||"";
+  $(k).addEventListener("input",e=>{S[k]=e.target.value;save();});
+});
+
+function isDone(t,d){ return !!S.done[t.id+"-"+d]; }
+function flexDoneDay(t){ for(const d of ALL) if(isDone(t,d)) return d; return -1; }
+function total(){
+  let n=0;
+  for(const t of TASKS){
+    if(t.flex){ if(flexDoneDay(t)>=0) n++; }
+    else for(const d of t.days) if(isDone(t,d)) n++;
+  }
+  return n;
+}
+function dayTasks(d){ return TASKS.filter(t=>t.days.includes(d)); }
+function dayComplete(d){
+  return dayTasks(d).filter(t=>!t.flex).every(t=>isDone(t,d));
+}
+
+function ring(t,d,cls=""){
+  const b=document.createElement("button");
+  const fd = t.flex ? flexDoneDay(t) : -1;
+  b.className="ring"+(t.flex?" dash":"")+(isDone(t,d)?" done":"")+(cls?" "+cls:"");
+  b.style.setProperty("--bd",t.bd);
+  b.setAttribute("aria-label",t.name+" – "+DAYS[d]);
+  if(t.flex && fd>=0 && fd!==d) b.disabled=true;
+  b.innerHTML='<img src="img/'+t.id+'.jpg" alt="">';
+  b.onclick=()=>toggle(t,d);
+  return b;
+}
+
+function toggle(t,d){
+  const k=t.id+"-"+d;
+  const wasDayComplete=dayComplete(d);
+  if(S.done[k]) delete S.done[k]; else S.done[k]=true;
+  save(); render();
+  if(S.done[k]){
+    const n=total();
+    if(n===GOAL) toast("🏆 Bütün halkalar tamam! Hazineyi kazandın!");
+    else if(!wasDayComplete && dayComplete(d)) toast("🎉 "+DAYS[d]+" görevleri bitti! Harika kahraman!");
+    else toast(["Süper!","Bravo!","Bir halka daha!","Link seninle gurur duyuyor!","Devam kahraman!"][Math.floor(Math.random()*5)]);
+  }
+}
+
+let tt;
+function toast(m){
+  const el=$("toast"); el.textContent=m; el.classList.add("show");
+  clearTimeout(tt); tt=setTimeout(()=>el.classList.remove("show"),1800);
+}
+
+function renderTabs(){
+  const w=$("tabs"); w.innerHTML="";
+  DAYS.forEach((name,i)=>{
+    const b=document.createElement("button");
+    b.className="tab"+(i===cur?" on":"")+(i===todayIdx?" today":"");
+    b.innerHTML=SHORT[i]+'<span class="d">'+(dayComplete(i)?"✅":dayTasks(i).filter(t=>!t.flex&&isDone(t,i)).length+"/"+dayTasks(i).filter(t=>!t.flex).length)+'</span>';
+    b.onclick=()=>{cur=i;render();};
+    w.appendChild(b);
+  });
+}
+
+function renderDay(){
+  const ders=$("ders"); ders.innerHTML="<span>"+DAYS[cur]+(cur===todayIdx?" (bugün)":"")+":</span>";
+  if(!DERS[cur].length) ders.innerHTML+=' <span>ders yok 🎈</span>';
+  DERS[cur].forEach(([n,c])=>{ders.innerHTML+=' <span class="chip '+c+'">'+n+'</span>';});
+
+  const list=$("list"); list.innerHTML="";
+  dayTasks(cur).forEach(t=>{
+    const fd=t.flex?flexDoneDay(t):-1;
+    const row=document.createElement("div");
+    row.className="task"+(t.flex&&fd>=0&&fd!==cur?" off":"");
+    row.style.setProperty("--bg",t.bg); row.style.setProperty("--bd",t.bd);
+    let sub='<b>'+t.who+'</b> · '+t.note;
+    if(t.flex&&fd>=0&&fd!==cur) sub+=' · <b>'+DAYS[fd]+' yapıldı ✔</b>';
+    let links=t.links?'<div class="links">'+t.links.map(([n,u])=>'<a href="'+u+'" target="_blank" rel="noopener">'+n+' ↗</a>').join("")+'</div>':"";
+    row.innerHTML='<img class="ic" src="img/'+t.id+'.jpg" alt=""><div class="tx"><div class="nm">'+t.name+(t.min?'<em>· '+t.min+'</em>':'')+'</div><div class="sb">'+sub+'</div>'+links+'</div>';
+    row.appendChild(ring(t,cur));
+    list.appendChild(row);
+  });
+}
+
+function renderWeek(){
+  const g=$("grid");
+  let h='<tr><th class="rowh">Görev</th>'+SHORT.map((s,i)=>'<th'+(i===todayIdx?' style="background:#d2652a"':'')+'>'+s+'</th>').join("")+'</tr>';
+  g.innerHTML=h;
+  TASKS.forEach(t=>{
+    const tr=document.createElement("tr");
+    tr.style.setProperty("--bg",t.bg); tr.style.setProperty("--bd",t.bd);
+    tr.innerHTML='<td class="lbl"><img src="img/'+t.id+'.jpg" alt=""><span>'+t.name+'</span></td>';
+    ALL.forEach(d=>{
+      const td=document.createElement("td");
+      if(t.days.includes(d)) td.appendChild(ring(t,d)); else td.className="empty";
+      tr.appendChild(td);
+    });
+    g.appendChild(tr);
+  });
+}
+
+function render(){
+  const n=total();
+  $("total").textContent=n;
+  $("bar").style.width=(n/GOAL*100)+"%";
+  renderTabs(); renderDay(); renderWeek();
+}
+
+$("vDay").onclick=()=>{$("vDay").classList.add("on");$("vWeek").classList.remove("on");$("dayView").hidden=false;$("weekView").hidden=true;};
+$("vWeek").onclick=()=>{$("vWeek").classList.add("on");$("vDay").classList.remove("on");$("dayView").hidden=true;$("weekView").hidden=false;};
+$("reset").onclick=()=>{
+  if(confirm("Tüm halkalar silinsin ve yeni hafta başlasın mı?")){
+    S.done={}; S.week=""; S.treasure=""; $("week").value=""; $("treasure").value=""; save(); render(); toast("Yeni macera başladı! ⚔️");
+  }
+};
+
+render();
+</script>
+</body>
+</html>
