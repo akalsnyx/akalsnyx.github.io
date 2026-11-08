@@ -9,8 +9,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Macera">
 <meta name="theme-color" content="#fffaf0">
-<link rel="apple-touch-icon" href="img/hero.jpg">
-<link rel="icon" href="img/hero.jpg">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" href="icon.png">
 <link rel="manifest" href="manifest.json">
 <style>
   :root{
@@ -23,7 +23,8 @@
   .wrap{max-width:760px;margin:0 auto;padding:12px 14px 24px}
 
   header{display:flex;align-items:center;gap:12px;margin:4px 0 10px}
-  header img{width:64px;height:64px;border-radius:16px;object-fit:cover;background:#fff;border:2px solid var(--line)}
+  #heroBox{width:64px;height:64px;border-radius:16px;overflow:hidden;background:#fff;border:2px solid var(--line);flex:none}
+  .pic{width:100%;height:100%;object-fit:cover;display:flex;align-items:center;justify-content:center;font-size:30px;line-height:1}
   header .kicker{font-size:11px;letter-spacing:.14em;font-weight:800;color:var(--accent)}
   header h1{margin:2px 0 0;font-size:24px;font-weight:900;line-height:1.1}
 
@@ -57,7 +58,7 @@
 
   .list{display:flex;flex-direction:column;gap:10px}
   .task{display:flex;align-items:center;gap:12px;border-radius:18px;padding:10px;border:2px solid;background:var(--bg);border-color:var(--bd)}
-  .task .ic{width:52px;height:52px;border-radius:12px;object-fit:cover;flex:none;border:2px solid var(--bd)}
+  .task .ic{width:52px;height:52px;border-radius:12px;overflow:hidden;flex:none;border:2px solid var(--bd);background:#fff}
   .task .tx{flex:1;min-width:0}
   .task .nm{font-weight:900;font-size:17px}
   .task .nm em{font-style:normal;font-size:12px;color:var(--bd);font-weight:800;margin-left:4px}
@@ -71,8 +72,8 @@
   .ring{width:62px;height:62px;border-radius:50%;border:4px solid var(--bd);background:#fff;flex:none;
     padding:0;position:relative;overflow:hidden;cursor:pointer}
   .ring.dash{border-style:dashed}
-  .ring img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(0);transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
-  .ring.done img{transform:scale(1)}
+  .ring .pic{position:absolute;inset:0;transform:scale(0);transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+  .ring.done .pic{transform:scale(1)}
   .ring.done{box-shadow:0 0 0 3px #fff,0 0 0 6px #f0b429}
   .ring:disabled{opacity:.35;cursor:default}
 
@@ -83,7 +84,9 @@
   .grid td{text-align:center;border-radius:10px;height:46px;background:var(--bg)}
   .grid td.empty{background:none;border:2px dashed var(--line)}
   .grid td.lbl{background:none;text-align:left;padding-left:2px;white-space:nowrap}
-  .grid td.lbl img{width:30px;height:30px;border-radius:8px;object-fit:cover;vertical-align:middle;border:2px solid var(--bd)}
+  .grid td.lbl .lb{display:inline-block;width:30px;height:30px;border-radius:8px;overflow:hidden;vertical-align:middle;border:2px solid var(--bd);background:#fff}
+  .grid td.lbl .pic{font-size:17px}
+  .grid .ring .pic{font-size:18px}
   .grid td.lbl span{font-size:12px;font-weight:800;vertical-align:middle;margin-left:4px}
   @media (max-width:520px){.grid td.lbl span{display:none}.grid table{min-width:0}.grid th{font-size:10px}}
   .grid .ring{width:36px;height:36px;border-width:3px}
@@ -99,6 +102,20 @@
   .tip{font-size:13px;color:var(--muted);text-align:center}
   .reset{border:2px solid var(--ink);background:#fff;border-radius:14px;padding:11px;font:inherit;font-weight:800;font-size:14px}
 
+  .set{background:#fff;border:2px solid var(--line);border-radius:16px;padding:4px 12px}
+  .set summary{font-weight:800;padding:10px 0;cursor:pointer}
+  .set h3{font-size:14px;margin:14px 0 6px}
+  .set p{font-size:13px;color:var(--muted);margin:4px 0 8px}
+  .prow{display:flex;align-items:center;gap:10px;padding:6px 0;border-top:1px solid #f1ecdf}
+  .prow .th{width:40px;height:40px;border-radius:10px;overflow:hidden;border:2px solid var(--bd);flex:none;background:#fff}
+  .prow .th .pic{font-size:22px}
+  .prow span{flex:1;font-weight:700;font-size:14px}
+  .btn{border:2px solid var(--ink);background:#fff;border-radius:12px;padding:8px 12px;font:inherit;font-weight:800;font-size:13px;color:var(--ink);display:inline-block;cursor:pointer}
+  .btn.main{background:var(--ink);color:#fff}
+  .btn.warn{border-color:#d2652a;color:#d2652a}
+  .btns{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px}
+  .note{font-size:13px;font-weight:700;color:#b4521f;background:#fde6d6;border-radius:12px;padding:8px 10px;margin-top:8px}
+  .note[hidden]{display:none}
   .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 24px);transform:translate(-50%,140%);
     background:var(--ink);color:#fff;padding:12px 18px;border-radius:16px;font-weight:800;transition:transform .3s;z-index:9;
     text-align:center;max-width:90vw}
@@ -108,7 +125,7 @@
 <body>
 <div class="wrap">
   <header>
-    <img src="img/hero.jpg" alt="">
+    <div id="heroBox"></div>
     <div>
       <div class="kicker">KAHRAMANIN GÖREV HARİTASI</div>
       <h1>Haftalık Macera Programı</h1>
@@ -143,6 +160,20 @@
   <div class="foot">
     <div class="tip">⭐ Görevi bitirince halkaya dokun, Link gelsin! Yanlışlıkla dokunduysan tekrar dokun.</div>
     <label class="treasure">Haftanın hazinesi<input id="treasure" placeholder="Bu haftanın ödülü…" autocomplete="off"></label>
+    <div class="note" id="dirty" hidden>💾 Son yedekten sonra değişiklik var. Ayarlar → “Yedeği kaydet”.</div>
+    <details class="set" id="setBox">
+      <summary>⚙️ Resimler ve yedek</summary>
+      <h3>Yedek (JSON dosyası)</h3>
+      <p>Resimler ve işaretler bu dosyada durur. “Kaydet” deyince iPhone’un paylaş menüsü açılır: <b>Dosyalar’a Kaydet</b> seçin. Başka telefona AirDrop/WhatsApp ile gönderip orada “Yedeği yükle” ile açabilirsiniz.</p>
+      <div class="btns">
+        <button class="btn main" id="exp">💾 Yedeği kaydet</button>
+        <label class="btn">📂 Yedeği yükle<input type="file" id="imp" accept=".json,application/json,text/plain" hidden></label>
+      </div>
+      <p id="lastB"></p>
+      <h3>Görev resimleri</h3>
+      <p>Resimler sadece bu telefonda saklanır, internete yüklenmez.</p>
+      <div id="pics"></div>
+    </details>
     <button class="reset" id="reset">🔄 Yeni hafta başlat</button>
   </div>
 </div>
@@ -182,6 +213,17 @@ const TASKS = [
   {id:"diy",       name:"DIY",             min:"",      who:"Usta Link",     note:"annemle, haftada 1", days:ALL,   bg:"#dff2ec", bd:"#1f7a5c", flex:true}
 ];
 const GOAL = 39;
+const EMO = {hero:"⚔️",okul:"📚",satranc:"♟️",piyano:"🎹",turkce:"📖",ingilizce:"🔤",extra:"💪",myon:"📗",brainpop:"🧠",code:"🐒",diy:"🛠️"};
+const IMGKEY = "macera-img-v1";
+let IMG = {};
+try{ IMG = JSON.parse(localStorage.getItem(IMGKEY)||"{}"); }catch(e){}
+function saveImg(){
+  try{ localStorage.setItem(IMGKEY, JSON.stringify(IMG)); return true; }
+  catch(e){ alert("Telefonda yer kalmadı, resim kaydedilemedi."); return false; }
+}
+function pic(id){
+  return IMG[id] ? '<img class="pic" src="'+IMG[id]+'" alt="">' : '<span class="pic">'+(EMO[id]||"⭐")+'</span>';
+}
 
 const KEY = "macera-v1";
 let S = load();
@@ -189,7 +231,7 @@ function load(){
   try{ return Object.assign({done:{},hero:"",week:"",treasure:""}, JSON.parse(localStorage.getItem(KEY)||"{}")); }
   catch(e){ return {done:{},hero:"",week:"",treasure:""}; }
 }
-function save(){ localStorage.setItem(KEY, JSON.stringify(S)); }
+function save(){ S.changed = Date.now(); localStorage.setItem(KEY, JSON.stringify(S)); }
 
 const todayIdx = (new Date().getDay()+6)%7;
 let cur = todayIdx;
@@ -197,7 +239,7 @@ let cur = todayIdx;
 const $ = id => document.getElementById(id);
 ["hero","week","treasure"].forEach(k=>{
   $(k).value = S[k]||"";
-  $(k).addEventListener("input",e=>{S[k]=e.target.value;save();});
+  $(k).addEventListener("input",e=>{S[k]=e.target.value;save();showDirty();});
 });
 
 function isDone(t,d){ return !!S.done[t.id+"-"+d]; }
@@ -222,7 +264,7 @@ function ring(t,d,cls=""){
   b.style.setProperty("--bd",t.bd);
   b.setAttribute("aria-label",t.name+" – "+DAYS[d]);
   if(t.flex && fd>=0 && fd!==d) b.disabled=true;
-  b.innerHTML='<img src="img/'+t.id+'.jpg" alt="">';
+  b.innerHTML=pic(t.id);
   b.onclick=()=>toggle(t,d);
   return b;
 }
@@ -271,7 +313,7 @@ function renderDay(){
     let sub='<b>'+t.who+'</b> · '+t.note;
     if(t.flex&&fd>=0&&fd!==cur) sub+=' · <b>'+DAYS[fd]+' yapıldı ✔</b>';
     let links=t.links?'<div class="links">'+t.links.map(([n,u])=>'<a href="'+u+'" target="_blank" rel="noopener">'+n+' ↗</a>').join("")+'</div>':"";
-    row.innerHTML='<img class="ic" src="img/'+t.id+'.jpg" alt=""><div class="tx"><div class="nm">'+t.name+(t.min?'<em>· '+t.min+'</em>':'')+'</div><div class="sb">'+sub+'</div>'+links+'</div>';
+    row.innerHTML='<div class="ic">'+pic(t.id)+'</div><div class="tx"><div class="nm">'+t.name+(t.min?'<em>· '+t.min+'</em>':'')+'</div><div class="sb">'+sub+'</div>'+links+'</div>';
     row.appendChild(ring(t,cur));
     list.appendChild(row);
   });
@@ -284,7 +326,7 @@ function renderWeek(){
   TASKS.forEach(t=>{
     const tr=document.createElement("tr");
     tr.style.setProperty("--bg",t.bg); tr.style.setProperty("--bd",t.bd);
-    tr.innerHTML='<td class="lbl"><img src="img/'+t.id+'.jpg" alt=""><span>'+t.name+'</span></td>';
+    tr.innerHTML='<td class="lbl"><span class="lb">'+pic(t.id)+'</span><span>'+t.name+'</span></td>';
     ALL.forEach(d=>{
       const td=document.createElement("td");
       if(t.days.includes(d)) td.appendChild(ring(t,d)); else td.className="empty";
@@ -298,14 +340,92 @@ function render(){
   const n=total();
   $("total").textContent=n;
   $("bar").style.width=(n/GOAL*100)+"%";
-  renderTabs(); renderDay(); renderWeek();
+  $("heroBox").innerHTML=pic("hero");
+  renderTabs(); renderDay(); renderWeek(); renderPics(); showDirty();
 }
+
+function showDirty(){
+  $("dirty").hidden = !(S.changed && (!S.lastBackup || S.changed > S.lastBackup));
+  $("lastB").textContent = S.lastBackup ? "Son yedek: "+new Date(S.lastBackup).toLocaleString("tr-TR") : "Henüz yedek alınmadı.";
+}
+
+function renderPics(){
+  const w=$("pics"); w.innerHTML="";
+  [{id:"hero",name:"Başlık resmi",bd:"#1f2433"}].concat(TASKS).forEach(t=>{
+    const r=document.createElement("div"); r.className="prow"; r.style.setProperty("--bd",t.bd);
+    r.innerHTML='<div class="th">'+pic(t.id)+'</div><span>'+t.name+'</span>';
+    const l=document.createElement("label"); l.className="btn"; l.textContent="Seç";
+    const inp=document.createElement("input"); inp.type="file"; inp.accept="image/*"; inp.hidden=true;
+    inp.onchange=()=>{ if(inp.files[0]) loadPic(inp.files[0],t.id); };
+    l.appendChild(inp); r.appendChild(l);
+    if(IMG[t.id]){
+      const x=document.createElement("button"); x.className="btn warn"; x.textContent="Sil";
+      x.onclick=()=>{ delete IMG[t.id]; saveImg(); S.changed=Date.now(); save(); render(); };
+      r.appendChild(x);
+    }
+    w.appendChild(r);
+  });
+}
+
+// Seçilen fotoğrafı kare kırpıp küçültür (192px JPEG)
+function loadPic(file,id){
+  const url=URL.createObjectURL(file); const im=new Image();
+  im.onload=()=>{
+    const n=192, c=document.createElement("canvas"); c.width=c.height=n;
+    const m=Math.min(im.naturalWidth,im.naturalHeight);
+    c.getContext("2d").drawImage(im,(im.naturalWidth-m)/2,(im.naturalHeight-m)/2,m,m,0,0,n,n);
+    IMG[id]=c.toDataURL("image/jpeg",0.82); URL.revokeObjectURL(url);
+    if(saveImg()){ save(); render(); toast("Resim eklendi ✔"); }
+  };
+  im.onerror=()=>alert("Bu resim açılamadı.");
+  im.src=url;
+}
+
+async function exportBackup(){
+  const now=Date.now();
+  const data={app:"macera",version:1,saved:new Date(now).toISOString(),images:IMG,state:Object.assign({},S,{lastBackup:now})};
+  const name="macera-yedek.json";
+  const blob=new Blob([JSON.stringify(data)],{type:"application/json"});
+  const file=new File([blob],name,{type:"application/json"});
+  try{
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({files:[file],title:"Macera yedeği"});
+    }else{
+      const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name;
+      document.body.appendChild(a); a.click(); a.remove();
+    }
+    S.lastBackup=now; localStorage.setItem(KEY,JSON.stringify(S)); showDirty(); toast("Yedek hazır 💾");
+  }catch(e){ if(e.name!=="AbortError") alert("Yedek kaydedilemedi: "+e.message); }
+}
+
+function importBackup(file){
+  const rd=new FileReader();
+  rd.onload=()=>{
+    let d; try{ d=JSON.parse(rd.result); }catch(e){ return alert("Bu dosya geçerli bir yedek değil."); }
+    if(!d || d.app!=="macera") return alert("Bu dosya Macera yedeği değil.");
+    if(d.images) Object.assign(IMG,d.images);
+    saveImg();
+    if(d.state && d.state.done && Object.keys(d.state.done).length && Object.keys(S.done).length &&
+       !confirm("Yedekteki işaretler bu telefondakilerin yerine geçsin mi?\n(İptal: sadece resimler alınır)")){
+    } else if(d.state){
+      S=Object.assign({done:{},hero:"",week:"",treasure:""},d.state);
+    }
+    localStorage.setItem(KEY,JSON.stringify(S));
+    ["hero","week","treasure"].forEach(k=>$(k).value=S[k]||"");
+    render(); toast("Yedek yüklendi ✔");
+  };
+  rd.readAsText(file);
+}
+$("exp").onclick=exportBackup;
+$("imp").onchange=e=>{ if(e.target.files[0]) importBackup(e.target.files[0]); e.target.value=""; };
+document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible") showDirty(); });
+if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});
 
 $("vDay").onclick=()=>{$("vDay").classList.add("on");$("vWeek").classList.remove("on");$("dayView").hidden=false;$("weekView").hidden=true;};
 $("vWeek").onclick=()=>{$("vWeek").classList.add("on");$("vDay").classList.remove("on");$("dayView").hidden=true;$("weekView").hidden=false;};
 $("reset").onclick=()=>{
   if(confirm("Tüm halkalar silinsin ve yeni hafta başlasın mı?")){
-    S.done={}; S.week=""; S.treasure=""; $("week").value=""; $("treasure").value=""; save(); render(); toast("Yeni macera başladı! ⚔️");
+    S.done={}; S.week=""; S.treasure=""; $("week").value=""; $("treasure").value=""; save(); render(); showDirty(); toast("Yeni macera başladı! ⚔️");
   }
 };
 
